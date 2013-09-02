@@ -448,6 +448,7 @@ public class TimeslotScreen extends Composite {
                     }
                 }
                 regionField.setSelectedIndex(0);
+                noTimeslotLabel.setText("");
                 countContestant(country,null);
                 break;
             // Hong Kong
@@ -528,6 +529,7 @@ public class TimeslotScreen extends Composite {
         String contains;
         String region = null;
         switch (regionField.getSelectedIndex()) {
+            // Select All
             case 0:
                 noTimeslotLabel.setText("");
                 list.clear();
@@ -536,6 +538,8 @@ public class TimeslotScreen extends Composite {
                         list.add(s);
                     }
                 }
+                region = "Select All";
+                countContestant(null, region);
                 break;
             // Beijing
             case 1:
@@ -644,17 +648,34 @@ public class TimeslotScreen extends Composite {
                     noTimeslotLabel.setText("Number of contestant from " + country1 + " without timeslot: " + counter);
 
                 }
-                else{
-                    int counter = 0;
-                    for(Student s : studentList) {
-                        if(s.getCountry().substring(6).equals(region1)){
-                            if(s.getTimeslot() == 0){
-                                counter++;
+
+                if(countryField.getItemText(countryField.getSelectedIndex()).equals("China")){
+                    if(regionField.getItemText(regionField.getSelectedIndex()).equals("Select All")){
+                        int counter = 0;
+                        for (Student s : studentList){
+                            if (s.getCountry().contains("China")){
+                                if (s.getTimeslot() == 0){
+                                    counter++;
+                                }
                             }
                         }
+                        noTimeslotLabel.setText("Number of contestant from China without timeslot: " + counter);
                     }
+
+                    else{
+                        int counter = 0;
+                        for(Student s : studentList) {
+                            if(s.getCountry().substring(6).equals(region1)){
+                                if(s.getTimeslot() == 0){
+                                    counter++;
+                                }
+                            }
+                        }
                         noTimeslotLabel.setText("Number of contestant from " + region1 + " without timeslot: " + counter);
+                    }
                 }
+
+
             }
         });
     }
