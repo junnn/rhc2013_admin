@@ -654,11 +654,9 @@ public class TimeslotScreen extends Composite {
                         }
                     }
                         noTimeslotLabel.setText("Number of contestant from " + region1 + " without timeslot: " + counter);
-
                 }
             }
         });
-
     }
 
     private void displayErrorBox(String errorHeader, String message) {
@@ -686,6 +684,7 @@ public class TimeslotScreen extends Composite {
     @UiHandler("noTimeSearchButton")
     public void onTimeSearchClick(ClickEvent event){
         List<Student> noTimeSlotList = new ArrayList<Student>();
+        List<Student> withoutTimeSlot = new ArrayList<Student>();
         for (Student student : list)
         {
             noTimeSlotList.add(student);
@@ -693,10 +692,10 @@ public class TimeslotScreen extends Composite {
         list.clear();
         for (Student s : noTimeSlotList){
             if (s.getTimeslot() == 0){
-                list.add(s);
+                withoutTimeSlot.add(s);
             }
         }
-        provider.setList(list);
+        provider.setList(withoutTimeSlot);
     }
 
     private void countTimeslot(String timeslot){
@@ -732,7 +731,6 @@ public class TimeslotScreen extends Composite {
                 int availableSlot = 300 - counter;
                 check =  String.valueOf(availableSlot);
                 timeslotLabel.setText("Number of slots available for "+ timeslot1 + ": " + availableSlot);
-
             }
         });
     }
