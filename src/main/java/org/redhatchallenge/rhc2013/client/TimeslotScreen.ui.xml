@@ -36,12 +36,12 @@
                             <g:item value="6">Jinan</g:item>
                             <g:item value="7">Others</g:item>
                         </g:ListBox>
-                        &emsp;
+                        &nbsp;
                         Timeslots:
                         <g:ListBox ui:field="timeSlotList" visibleItemCount="1"/>
 
                         <g:Button ui:field="timeSlotButton" text="Assign Time Slot"/>
-                        &emsp;
+                        &nbsp;
                         <g:Button ui:field="noTimeSearchButton" text="Contestants Without Timeslot"/>
                         <g:Button ui:field="timeslotPageRefresh" text="Refresh"/>
                         <g:Button ui:field="backButton" text="Back"/>
