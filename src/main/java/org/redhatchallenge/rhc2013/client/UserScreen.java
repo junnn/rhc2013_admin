@@ -99,7 +99,9 @@ public class UserScreen extends Composite {
 
                 initCellTable();
             }
+
         });
+
 
         userService.getListOfTimeSlot(new AsyncCallback<List<TimeSlotList>>() {
             @Override
@@ -114,7 +116,10 @@ public class UserScreen extends Composite {
                     Date date = convertTimeSlot(d.getTimeslot());
                     String formatedDate = returnLongDateTime(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT).format(date));
                     dateList.add(formatedDate);
-
+                }
+                timeSlotList.insertItem("Select All", 0);
+                for(int i = 0; i < dateList.size(); i++){
+                    timeSlotList.insertItem(dateList.get(i).toString(),i+1);
                 }
             }
         });
