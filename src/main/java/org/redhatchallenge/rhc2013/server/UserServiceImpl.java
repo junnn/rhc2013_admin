@@ -15,6 +15,7 @@ import org.joda.time.DateTimeZone;
 import org.redhatchallenge.rhc2013.client.UserService;
 import org.redhatchallenge.rhc2013.shared.ConfirmationTokens;
 import org.redhatchallenge.rhc2013.shared.Student;
+import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
@@ -24,12 +25,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author: Terry Chia (terrycwk1994@gmail.com)
@@ -46,6 +42,23 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
             List<Student> studentList = session.createCriteria(Student.class).list();
             session.close();
             return studentList;
+        } catch (HibernateException e) {
+            session.close();
+            return null;
+        }
+    }
+
+    @Override
+    public List<TimeSlotList> getListOfTimeSlot() throws IllegalArgumentException {
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            //noinspection unchecked
+            List<TimeSlotList> timeSlotLists = session.createCriteria(TimeSlotList.class).list();
+            session.close();
+
+            return timeSlotLists;
         } catch (HibernateException e) {
             session.close();
             return null;
