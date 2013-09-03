@@ -51,4 +51,9 @@ public class Header extends Composite{
     public void changeTimeLinkClick(ClickEvent event) {
         ContentContainer.INSTANCE.setContent(new ChangeTimeScreen());
     }
+
+    @UiHandler("resetPassword")
+    public void resetPasswordLinkClick(ClickEvent event) {
+        ContentContainer.INSTANCE.setContent(new ResetPasswordScreen());
+    }
 }

@@ -27,5 +27,7 @@ public interface UserServiceAsync {
 
     void exportCsv(List<Student> students, AsyncCallback<String> async);
 
+    void resetPassword(String password, String email, AsyncCallback<Boolean> async);
+
     void assignTimeslotAndQuestions(String email, AsyncCallback<Void> async);
 }
