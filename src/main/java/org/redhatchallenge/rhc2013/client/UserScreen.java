@@ -89,7 +89,7 @@ public class UserScreen extends Composite {
 
             @Override
             public void onSuccess(List<Student> result) {
-
+                origStudentList = new ArrayList<Student>(result);
                 studentList = result;
 
                 setUserCount();
@@ -770,37 +770,6 @@ public class UserScreen extends Composite {
             }
         });
 
-        Column<Student, Boolean> statusColumn = new Column<Student, Boolean>(new CheckboxCell(true, false)) {
-            @Override
-            public Boolean getValue(Student student) {
-                return student.getStatus();
-            }
-        };
-
-        statusColumn.setFieldUpdater(new FieldUpdater<Student, Boolean>() {
-            @Override
-            public void update(int index, Student object, Boolean value) {
-                object.setStatus(value);
-                userService.updateStudentData(object, new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        caught.printStackTrace();
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if(!result) {
-                            displayErrorBox("Failed", "Update has failed");
-                        }
-
-                        else {
-                            cellTable.redraw();
-                        }
-                    }
-                });
-            }
-        });
-
         cellTable.addColumn(selectColumn, selectAllHeader);
         cellTable.addColumn(emailColumn, "Email");
         cellTable.addColumn(firstNameColumn, "First Name");
@@ -815,7 +784,6 @@ public class UserScreen extends Composite {
         cellTable.addColumn(lecturerEmailColumn, "Lecturer's Email");
         cellTable.addColumn(languageColumn, "Language");
         cellTable.addColumn(verifiedColumn, "Verified");
-        cellTable.addColumn(statusColumn, "Status");
 
         cellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Student> createCheckboxManager(cellTable.getColumnIndex(selectColumn)));
     }
@@ -856,13 +824,17 @@ public class UserScreen extends Composite {
         List<Student> list = new ArrayList<Student>();
 
         if(contains.equals("")) {
-            provider.setList(studentList);
+            for (Student s : origStudentList){
+                list.add(s);
+            }
+            provider.getList().clear();
+            provider.getList().addAll(list);
         }
 
         else {
             String category = searchTerms.getItemText(searchTerms.getSelectedIndex());
             if(category.equalsIgnoreCase("Email")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getEmail().contains(contains)) {
                         list.add(s);
                     }
@@ -870,7 +842,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("First Name")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getFirstName().contains(contains)) {
                         list.add(s);
                     }
@@ -878,7 +850,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Last Name")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getLastName().contains(contains)) {
                         list.add(s);
                     }
@@ -886,7 +858,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Contact")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getContact().contains(contains)) {
                         list.add(s);
                     }
@@ -894,7 +866,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Country")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getCountry().contains(contains)) {
                         list.add(s);
                     }
@@ -902,7 +874,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Country Code")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getCountryCode().contains(contains)) {
                         list.add(s);
                     }
@@ -910,7 +882,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("School")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getFirstName().contains(contains)) {
                         list.add(s);
                     }
@@ -918,7 +890,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Lecturer's First Name")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getLecturerFirstName().contains(contains)) {
                         list.add(s);
                     }
@@ -926,7 +898,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Lecturer's Last Name")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getLecturerLastName().contains(contains)) {
                         list.add(s);
                     }
@@ -934,7 +906,7 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Lecturer's Email")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getLecturerEmail().contains(contains)) {
                         list.add(s);
                     }
@@ -942,10 +914,16 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Language")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getLanguage().contains(contains)) {
                         list.add(s);
                     }
+                }
+            }
+
+            else {
+                for (Student s : origStudentList){
+                    list.add(s);
                 }
             }
 
