@@ -33,8 +33,11 @@
                  <g:item value="11">Language</g:item>
              </g:ListBox>
              <g:Button ui:field="searchButton" text="Search"/>
-             &emsp;
-             Time Slot:
+             </td>
+        </tr>
+        <tr>
+            <td>
+                Time Slot:
                 <g:ListBox ui:field="timeSlotList" visibleItemCount="1">
                     <g:item value="1">Please Select a Time Slot</g:item>
                     <g:item value="1">23 October 2013, 9:00am to 10:00am</g:item>
@@ -51,13 +54,9 @@
                     <g:item value="12">24 October 2013, 16:00PM to 17:00PM</g:item>
                 </g:ListBox>
                 <g:Button ui:field="timeSlotButton" text="Assign"/>
-                &emsp;
-                Other Screens:
-                <g:Button ui:field="registerButton" text="Add New Contestant"/>
-                &emsp;
-                <g:Button ui:field="TimeSlotMngButton" text="Manage Time Slots"/>
             </td>
         </tr>
+
             <tr>
                <td>
                     <g:Button ui:field="deleteButton" text="Delete"/>

@@ -44,7 +44,6 @@
                         &nbsp;
                         <g:Button ui:field="noTimeSearchButton" text="Contestants Without Timeslot"/>
                         <g:Button ui:field="timeslotPageRefresh" text="Refresh"/>
-                        <g:Button ui:field="backButton" text="Back"/>
                     </td>
                 </tr>
                 <tr>

@@ -518,11 +518,6 @@ public class TimeslotScreen extends Composite {
         }
     }
 
-    @UiHandler("backButton")
-    public void handleBackButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new UserScreen());
-    }
-
 
     @UiHandler("regionField")
     public void handleRegionChange(ChangeEvent event) {

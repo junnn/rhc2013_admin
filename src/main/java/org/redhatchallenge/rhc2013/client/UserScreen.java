@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -49,7 +50,6 @@ public class UserScreen extends Composite {
     @UiField TextBox searchField;
     @UiField ListBox searchTerms;
     @UiField Button searchButton;
-    @UiField Button registerButton;
     @UiField Button deleteButton;
     @UiField Button exportButton;
     @UiField Button refreshButton;
@@ -59,7 +59,6 @@ public class UserScreen extends Composite {
     @UiField Label verifiedLabel;
     @UiField ListBox timeSlotList;
     @UiField Button timeSlotButton;
-    @UiField Button TimeSlotMngButton;
     @UiField Label errorLabel;
 
 
@@ -962,43 +961,41 @@ public class UserScreen extends Composite {
 
     @UiHandler("deleteButton")
     public void handleDeleteButtonClick(ClickEvent event) {
-        userService.deleteStudents(listOfSelectedStudents, new AsyncCallback<Boolean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                caught.printStackTrace();
-            }
+       Boolean delete =  Window.confirm("Are you sure you want to delete");
+        if (delete.equals(true)){
 
-            @Override
-            public void onSuccess(Boolean result) {
-                if(!result) {
-                    displayErrorBox("Error", "Error with deleting users");
+            userService.deleteStudents(listOfSelectedStudents, new AsyncCallback<Boolean>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    caught.printStackTrace();
                 }
 
-                else {
-                    List<Student> toBeRemoved = new ArrayList<Student>();
-                    for(Student s : studentList) {
-                        if(listOfSelectedStudents.contains(s)) {
-                            toBeRemoved.add(s);
-                        }
+                @Override
+                public void onSuccess(Boolean result) {
+                    if(!result) {
+                        displayErrorBox("Error", "Error with deleting users");
                     }
-                    studentList.removeAll(toBeRemoved);
-                    provider.setList(studentList);
-                    listOfSelectedStudents.clear(); //remove list of selected & deleted users
-                    setUserCount();
+
+                    else {
+                        List<Student> toBeRemoved = new ArrayList<Student>();
+                        for(Student s : studentList) {
+                            if(listOfSelectedStudents.contains(s)) {
+                                toBeRemoved.add(s);
+                            }
+                        }
+                        studentList.removeAll(toBeRemoved);
+                        provider.setList(studentList);
+                        listOfSelectedStudents.clear(); //remove list of selected & deleted users
+                        setUserCount();
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            Window.alert("User not Deleted.");
+        }
 
-    }
 
-    @UiHandler("registerButton")
-    public void handleRegisterButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new RegisterScreen());
-    }
-
-    @UiHandler("TimeSlotMngButton")
-    public void handleTimeSlotMngButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new TimeslotScreen());
     }
 
     @UiHandler("exportButton")

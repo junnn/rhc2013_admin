@@ -1,0 +1,19 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <g:HTMLPanel>
+        <div id="header">
+            <center>
+                <table>
+                    <tr>
+                        <td width="130"><g:Hyperlink ui:field="home" text="Home Screen"/></td>
+                        <td width="150"><g:Hyperlink ui:field="addContestant" text="Register Contestant"/></td>
+                        <td width="140"><g:Hyperlink ui:field="timeslotManagement" text="Assign TimeSlot"/></td>
+                        <td width="175"><g:Hyperlink ui:field="changeTimimgOfSlot" text="Change TimeSlot Timing"/></td>
+                        <td width="150"><g:Hyperlink ui:field="resetPassword" text="Reset Password"/></td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>
