@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.core.client.GWT;
 import org.redhatchallenge.rhc2013.shared.Student;
+import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public interface UserService extends RemoteService {
 
     List<Student> getListOfStudents() throws IllegalArgumentException;
+    List<TimeSlotList> getListOfTimeSlot() throws IllegalArgumentException;
     Boolean updateStudentData(Student student) throws IllegalArgumentException;
     Boolean deleteStudents(List<Student> students) throws IllegalArgumentException;
     Boolean assignTimeSlot(List<Student> students, String timeSlot) throws IllegalArgumentException;
