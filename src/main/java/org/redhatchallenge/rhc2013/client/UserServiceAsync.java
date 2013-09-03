@@ -2,6 +2,7 @@ package org.redhatchallenge.rhc2013.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.redhatchallenge.rhc2013.shared.Student;
+import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
  */
 public interface UserServiceAsync {
     void getListOfStudents(AsyncCallback<List<Student>> async);
+
+    void getListOfTimeSlot(AsyncCallback<List<TimeSlotList>> async);
 
     void updateStudentData(Student student, AsyncCallback<Boolean> async);
 

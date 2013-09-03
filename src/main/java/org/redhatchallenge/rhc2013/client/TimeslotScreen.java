@@ -30,6 +30,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import org.redhatchallenge.rhc2013.shared.Student;
+import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -67,6 +68,8 @@ public class TimeslotScreen extends Composite {
     private List<Student> studentList;
     private ListDataProvider<Student> provider;
     private List<Student> selectedStudentList = new ArrayList<Student>();
+    private List<TimeSlotList> ListofTimeSlot;
+    private List<String> dateList = new ArrayList<String>();
     List<Student> list = new ArrayList<Student>();
 
     private static final ProvidesKey<Student> KEY_PROVIDER = new ProvidesKey<Student>() {
@@ -99,6 +102,24 @@ public class TimeslotScreen extends Composite {
                 provider.addDataDisplay(timeslotCellTable);
 
                 initTimeslotCellTable();
+            }
+        });
+
+        userService.getListOfTimeSlot(new AsyncCallback<List<TimeSlotList>>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(List<TimeSlotList> timeSlotLists) {
+                ListofTimeSlot = new ArrayList<TimeSlotList>(timeSlotLists);
+                for(TimeSlotList d : ListofTimeSlot){
+                    Date date = convertTimeSlot(d.getTimeslot());
+                    String formatedDate = returnLongDateTime(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT).format(date));
+                    dateList.add(formatedDate);
+
+                }
             }
         });
 
@@ -283,33 +304,42 @@ public class TimeslotScreen extends Composite {
         timeslotCellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Student> createCheckboxManager(timeslotCellTable.getColumnIndex(selectColumn)));
     }
 
+
+    private Date convertTimeSlot(long unixTime){
+        Date date = new Date(unixTime);
+        return date;
+    }
+
     @UiHandler("countryField")
     public void handleTimeSlotChange(ChangeEvent event) {
         if(countryField.getItemText(countryField.getSelectedIndex()).equalsIgnoreCase("China")){
 
             timeSlotList.clear();
-            timeSlotList.insertItem("Please Select a Time Slot",0);
-            timeSlotList.insertItem("23 October 2013, 9:00am to 10:00am", 1);
-            timeSlotList.insertItem("23 October 2013, 10:15AM to 11:15AM",2);
-            timeSlotList.insertItem("23 October 2013, 11:30AM to 12:30PM",3);
-            timeSlotList.insertItem("23 October 2013, 12:45PM to 13:45pm",4);
-            timeSlotList.insertItem("23 October 2013, 14:00PM to 15:00PM",5);
-            timeSlotList.insertItem("23 October 2013, 15:15PM to 16:15PM",6);
-            timeSlotList.insertItem("23 October 2013, 16:30PM to 17:30PM",7);
-            timeSlotList.insertItem("23 October 2013, 17:45PM to 18:45PM",8);
-            timeSlotList.insertItem("23 October 2013, 19:00PM to 20:00PM",9);
-            timeSlotList.insertItem("23 October 2013, 20:15PM to 21.15PM",10);
-
+            timeSlotList.insertItem("Select All", 0);
+            for(int i = 0; i < 10; i++){
+                timeSlotList.insertItem(dateList.get(i).toString(),i+1);
+            }
 
         }
         else{
             timeSlotList.clear();
-            timeSlotList.insertItem("Please Select a Time Slot",0);
-            timeSlotList.insertItem("24 October 2013, 14:00PM to 15.00PM",1);
-            timeSlotList.insertItem("24 October 2013, 16:00PM to 17.00PM",2);
-            timeSlotList.setItemSelected(0, true);
+            timeSlotList.insertItem("Select All", 0);
+            for(int i = 10; i < 12; i++){
+                timeSlotList.insertItem(dateList.get(i).toString(),i-9);
+            }
+
         }
+
+//        else{
+//            timeSlotList.clear();
+//            timeSlotList.insertItem("Please Select a Time Slot",0);
+//            timeSlotList.insertItem("24 October 2013, 14:00PM to 15.00PM",1);
+//            timeSlotList.insertItem("24 October 2013, 16:00PM to 17.00PM",2);
+//            timeSlotList.setItemSelected(0, true);
+
+//        }
     }
+
     @UiHandler("timeSlotList")
     public void handleTimeslotChange(ChangeEvent event){
         String timeslot;
@@ -397,6 +427,9 @@ public class TimeslotScreen extends Composite {
                 for (Student s : origStudentList){
                     list.add(s);
                 }
+                timeSlotList.clear();
+                timeSlotList.insertItem("Please Select a Time Slot",0);
+                regionField.setVisible(false);
                 break;
 
             // Singapore
@@ -755,4 +788,66 @@ public class TimeslotScreen extends Composite {
     public void refreshButton(ClickEvent event){
         ContentContainer.INSTANCE.setContent(new TimeslotScreen());
     }
+
+    private String returnLongDateTime(String date){
+        String LongDate;
+        if(date.equals("2013-10-23 09:00")){
+            LongDate = "23 October 2013, 9:00AM to 10:00AM";
+            return LongDate;
+        }
+        else if(date.equals("2013-10-23 10:15")){
+            LongDate = "23 October 2013, 10:15AM to 11:15AM";
+            return LongDate;
+        }
+
+        else if(date.equals("2013-10-23 11:30")){
+            LongDate = "23 October 2013, 11:30AM to 12:30PM";
+            return LongDate;
+        }
+        else if(date.equals("2013-10-23 12:45")){
+            LongDate = "23 October 2013, 12:45PM to 13:45PM";
+            return LongDate;
+        }
+        else if(date.equals("2013-10-23 14:00")){
+            LongDate = "23 October 2013, 14:00PM to 15:00PM";
+            return LongDate;
+        }
+        else if(date.equals("2013-10-23 15:15")){
+            LongDate = "23 October 2013, 15:15PM to 16:15PM";
+            return LongDate;
+        }
+        else if(date.equals("2013-10-23 16:30")){
+            LongDate = "23 October 2013, 16:30PM to 17:30PM";
+            return LongDate;
+        }
+        else if(date.equals("2013-10-23 17:45")){
+            LongDate = "23 October 2013, 17:45PM to 18:45PM";
+            return LongDate;
+        }
+        else if(date.equals("2013-10-23 19:00")){
+            LongDate = "23 October 2013, 19:00PM to 20:00PM";
+            return LongDate;
+        }
+        else if(date.equals("2013-10-23 20:15")){
+            LongDate = "23 October 2013, 20:15PM to 21.15PM";
+            return LongDate;
+        }
+
+        else if(date.equals("2013-10-24 14:00")){
+            LongDate = "24 October 2013, 14:00PM to 15.00PM";
+            return LongDate;
+        }
+
+        else if(date.equals("2013-10-24 16:00")){
+            LongDate = "24 October 2013, 16:00PM to 17.00PM";
+            return LongDate;
+        }
+        else{
+            LongDate = "Error";
+            return LongDate;
+        }
+
+    }
+
+
 }
