@@ -29,5 +29,6 @@
         <mapping resource="Student.hbm.xml" />
         <mapping resource="ConfirmationTokens.hbm.xml" />
         <mapping resource="ResetPasswordTokens.hbm.xml"/>
+        <mapping resource="TimeSlotList.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

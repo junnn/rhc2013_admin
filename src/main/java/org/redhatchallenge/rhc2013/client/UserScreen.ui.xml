@@ -35,21 +35,8 @@
              <g:Button ui:field="searchButton" text="Search"/>
              &emsp;
              Time Slot:
-                <g:ListBox ui:field="timeSlotList" visibleItemCount="1">
-                    <g:item value="1">Please Select a Time Slot</g:item>
-                    <g:item value="1">23 October 2013, 9:00am to 10:00am</g:item>
-                    <g:item value="2">23 October 2013, 10:15AM to 11:15AM</g:item>
-                    <g:item value="3">23 October 2013, 11:30AM to 12:30PM</g:item>
-                    <g:item value="4">23 October 2013, 12:45PM to 13:45pm</g:item>
-                    <g:item value="5">23 October 2013, 14:00PM to 15:00PM</g:item>
-                    <g:item value="6">23 October 2013, 15:15PM to 16:15PM</g:item>
-                    <g:item value="7">23 October 2013, 16:30PM to 17:30PM</g:item>
-                    <g:item value="8">23 October 2013, 17:45PM to 18:45PM</g:item>
-                    <g:item value="9">23 October 2013, 19:00PM to 20:00PM</g:item>
-                    <g:item value="10">23 October 2013, 20:15PM to 21:15PM</g:item>
-                    <g:item value="11">24 October 2013, 14:00PM to 15.00PM</g:item>
-                    <g:item value="12">24 October 2013, 16:00PM to 17:00PM</g:item>
-                </g:ListBox>
+                <g:ListBox ui:field="timeSlotList" visibleItemCount="1"/>
+
                 <g:Button ui:field="timeSlotButton" text="Assign"/>
                 &emsp;
                 Other Screens:
