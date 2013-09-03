@@ -128,10 +128,7 @@ public class TimeslotScreen extends Composite {
         timeSlotList.addItem("Please Select a Time Slot");
         errorLabel.setVisible(false);
         errorLabel.setText("No Time Slot Selected! Please try again!");
-
     }
-
-
 
     private void initTimeslotCellTable(){
         List list = provider.getList();
@@ -333,14 +330,6 @@ public class TimeslotScreen extends Composite {
 
         }
 
-//        else{
-//            timeSlotList.clear();
-//            timeSlotList.insertItem("Please Select a Time Slot",0);
-//            timeSlotList.insertItem("24 October 2013, 14:00PM to 15.00PM",1);
-//            timeSlotList.insertItem("24 October 2013, 16:00PM to 17.00PM",2);
-//            timeSlotList.setItemSelected(0, true);
-
-//        }
     }
 
     @UiHandler("timeSlotList")
@@ -523,7 +512,6 @@ public class TimeslotScreen extends Composite {
         final String timeSlot;
         if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please Select a Time Slot")){
             timeSlot = timeSlotList.getItemText(timeSlotList.getSelectedIndex());
-//            timeSlot = "24 October 2013, 14:00PM to 15.00PM";
             if(!check.equals("0")){
                 userService.assignTimeSlot(selectedStudentList, timeSlot, new AsyncCallback<Boolean>() {
                     @Override
@@ -737,11 +725,7 @@ public class TimeslotScreen extends Composite {
     @UiHandler("noTimeSearchButton")
     public void onTimeSearchClick(ClickEvent event){
         List<Student> noTimeSlotList = new ArrayList<Student>();
-<<<<<<< HEAD
         List<Student> withoutTimeSlot = new ArrayList<Student>();
-=======
-        List<Student> withoutTimeslot = new ArrayList<Student>();
->>>>>>> e9f0879... DB timeslot
         for (Student student : list)
         {
             noTimeSlotList.add(student);
@@ -749,17 +733,10 @@ public class TimeslotScreen extends Composite {
         list.clear();
         for (Student s : noTimeSlotList){
             if (s.getTimeslot() == 0){
-<<<<<<< HEAD
                 withoutTimeSlot.add(s);
             }
         }
         provider.setList(withoutTimeSlot);
-=======
-                withoutTimeslot.add(s);
-            }
-        }
-        provider.setList(withoutTimeslot);
->>>>>>> e9f0879... DB timeslot
     }
 
     private void countTimeslot(String timeslot){
@@ -861,8 +838,5 @@ public class TimeslotScreen extends Composite {
             LongDate = "Error";
             return LongDate;
         }
-
     }
-
-
 }

@@ -7,6 +7,7 @@
 
     <g:HTMLPanel>
         <center>
+            <p><g:Label ui:field="testing"/></p>
             <p><font size="6"><b>Timing Adjustment</b></font></p>
             <g:ListBox ui:field="listOfTiming"/>
             <c:CellTable ui:field="readOnlyCellTable"/>
