@@ -21,9 +21,8 @@
         <url-pattern>/administration/download</url-pattern>
     </servlet-mapping>
 
-    <!-- Servlets -->
-  
-  <!--&lt;!&ndash; Default page to serve &ndash;&gt;-->
+     <!--Servlets -->
+   <!--Default page to serve -->
   <!--<welcome-file-list>-->
     <!--<welcome-file>administration.html</welcome-file>-->
   <!--</welcome-file-list>-->
