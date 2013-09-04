@@ -333,6 +333,14 @@ public class TimeslotScreen extends Composite {
 
         }
 
+//        else{
+//            timeSlotList.clear();
+//            timeSlotList.insertItem("Please Select a Time Slot",0);
+//            timeSlotList.insertItem("24 October 2013, 14:00PM to 15.00PM",1);
+//            timeSlotList.insertItem("24 October 2013, 16:00PM to 17.00PM",2);
+//            timeSlotList.setItemSelected(0, true);
+
+//        }
     }
 
     @UiHandler("timeSlotList")
@@ -506,7 +514,6 @@ public class TimeslotScreen extends Composite {
                 countContestant(country,null);
                 break;
         }
-
         provider.getList().clear();
         provider.getList().addAll(list);
     }
@@ -854,5 +861,8 @@ public class TimeslotScreen extends Composite {
             LongDate = "Error";
             return LongDate;
         }
+
     }
+
+
 }
