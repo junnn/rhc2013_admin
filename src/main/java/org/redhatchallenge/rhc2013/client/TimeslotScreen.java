@@ -419,6 +419,7 @@ public class TimeslotScreen extends Composite {
                 for (Student s : origStudentList){
                     list.add(s);
                 }
+
                 timeSlotList.clear();
                 timeSlotList.insertItem("Please Select a Time Slot",0);
                 regionField.setVisible(false);
@@ -467,6 +468,7 @@ public class TimeslotScreen extends Composite {
                     if (s.getCountry().contains(contains)){
                         list.add(s);
                     }
+
                 }
                 regionField.setSelectedIndex(0);
                 noTimeslotLabel.setText("");
