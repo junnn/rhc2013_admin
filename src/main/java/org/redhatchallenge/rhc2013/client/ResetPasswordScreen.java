@@ -24,6 +24,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import org.redhatchallenge.rhc2013.shared.FieldVerifier;
 import org.redhatchallenge.rhc2013.shared.Student;
+import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,17 +37,21 @@ public class ResetPasswordScreen extends Composite {
     private static ResetPasswordScreenUiBinder UiBinder = GWT.create(ResetPasswordScreenUiBinder.class);
 
     @UiField CellTable<Student> cellTable;
-    @UiField
-    MySimplePager pager;
+    @UiField MySimplePager pager;
     @UiField Button resetPasswordButton;
     @UiField TextBox passwordField;
     @UiField TextBox confirmPasswordField;
     @UiField Label resetPasswordLabel;
     @UiField Label newPasswordLabel;
     @UiField Label confirmPasswordLabel;
+    @UiField TextBox searchField;
+    @UiField ListBox searchTerms;
+    @UiField Button searchButton;
+    @UiField Button refreshButton;
 
     private UserServiceAsync userService = UserService.Util.getInstance();
     private List<Student> studentList;
+    private List<Student> origStudentList;
     private ListDataProvider<Student> provider;
     private List<Student> listOfSelectedStudents = new ArrayList<Student>();
     private static final ProvidesKey<Student> KEY_PROVIDER = new ProvidesKey<Student>() {
@@ -55,6 +60,7 @@ public class ResetPasswordScreen extends Composite {
             return item.getEmail();
         }
     };
+
 
     public ResetPasswordScreen() {
         initWidget(UiBinder.createAndBindUi(this));
@@ -67,7 +73,7 @@ public class ResetPasswordScreen extends Composite {
 
             @Override
             public void onSuccess(List<Student> result) {
-
+                origStudentList = new ArrayList<Student>(result);
                 studentList = result;
 
                 provider = new ListDataProvider<Student>(studentList);
@@ -254,6 +260,57 @@ public class ResetPasswordScreen extends Composite {
         }
     }
 
+    @UiHandler("searchButton")
+    public void handleSearchButtonClick(ClickEvent event) {
+        String contains = searchField.getText();
+
+        List<Student> list = new ArrayList<Student>();
+
+        if(contains.equals("")) {
+            for (Student s : origStudentList){
+                list.add(s);
+            }
+            provider.getList().clear();
+            provider.getList().addAll(list);
+        }
+
+        else {
+            String category = searchTerms.getItemText(searchTerms.getSelectedIndex());
+            if(category.equalsIgnoreCase("Email")) {
+                for(Student s : origStudentList) {
+                    if(s.getEmail().toLowerCase().contains(contains.toLowerCase())) {
+                        list.add(s);
+                    }
+                }
+            }
+
+            else if(category.equalsIgnoreCase("First Name")) {
+                for(Student s : origStudentList) {
+                    if(s.getFirstName().toLowerCase().contains(contains.toLowerCase())) {
+                        list.add(s);
+                    }
+                }
+            }
+
+            else if(category.equalsIgnoreCase("Last Name")) {
+                for(Student s : origStudentList) {
+                    if(s.getLastName().toLowerCase().contains(contains.toLowerCase())) {
+                        list.add(s);
+                    }
+                }
+            }
+
+            else {
+                for (Student s : origStudentList){
+                    list.add(s);
+                }
+            }
+
+            provider.getList().clear();
+            provider.getList().addAll(list);
+        }
+    }
+
     private void resetPassword() {
 
         userService = UserService.Util.getInstance();
@@ -273,6 +330,7 @@ public class ResetPasswordScreen extends Composite {
                     public void onSuccess(Boolean result) {
                         if(result) {
                             resetPasswordLabel.setText("Reset Password Successful!");
+
                         }
                     }
                 });

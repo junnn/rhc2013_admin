@@ -20,17 +20,17 @@
             <g:TextBox ui:field="searchField"/>
             <g:ListBox ui:field="searchTerms" visibleItemCount="1">
                 <g:item value="1">Please Select</g:item>
-                <g:item value="1">Email</g:item>
-                <g:item value="2">First Name</g:item>
-                <g:item value="3">Last Name</g:item>
-                <g:item value="4">Contact</g:item>
-                <g:item value="5">Country</g:item>
-                <g:item value="6">Country Code</g:item>
-                <g:item value="7">School</g:item>
-                <g:item value="8">Lecturer's First Name</g:item>
-                <g:item value="9">Lecturer's Last Name</g:item>
-                <g:item value="10">Lecturer's Email</g:item>
-                 <g:item value="11">Language</g:item>
+                <g:item value="2">Email</g:item>
+                <g:item value="3">First Name</g:item>
+                <g:item value="4">Last Name</g:item>
+                <g:item value="5">Contact</g:item>
+                <g:item value="6">Country</g:item>
+                <g:item value="7">Country Code</g:item>
+                <g:item value="8">School</g:item>
+                <g:item value="9">Lecturer's First Name</g:item>
+                <g:item value="10">Lecturer's Last Name</g:item>
+                <g:item value="11">Lecturer's Email</g:item>
+                 <g:item value="12">Language</g:item>
              </g:ListBox>
              <g:Button ui:field="searchButton" text="Search"/>
              &emsp;

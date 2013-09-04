@@ -678,7 +678,7 @@ public class UserScreen extends Composite {
         ArrayList<String> languageList = new ArrayList<String>();
             languageList.add("English");
             languageList.add("Chinese (Simplified)");
-            languageList.add("Chinese (Tranditional)");
+            languageList.add("Chinese (Traditional)");
 
         Column<Student, String> languageColumn = new Column<Student, String>(new SelectionCell(languageList)) {
             @Override
@@ -768,6 +768,20 @@ public class UserScreen extends Composite {
             }
         });
 
+        verifiedColumn.setSortable(true);
+        sortHandler.setComparator(verifiedColumn, new Comparator<Student>() {
+            @Override
+            public int compare(Student o1, Student o2) {
+                if (o1 == o2) {
+                    return 0;
+                }
+                if (o1 != null) {
+                    return (o2 != null) ? o1.getVerified().compareTo(o2.getVerified()) : 1;
+                }
+                return -1;
+            }
+        });
+
         cellTable.addColumn(selectColumn, selectAllHeader);
         cellTable.addColumn(emailColumn, "Email");
         cellTable.addColumn(firstNameColumn, "First Name");
@@ -819,6 +833,7 @@ public class UserScreen extends Composite {
     @UiHandler("searchButton")
     public void handleSearchButtonClick(ClickEvent event) {
         String contains = searchField.getText();
+
         List<Student> list = new ArrayList<Student>();
 
         if(contains.equals("")) {
@@ -833,7 +848,7 @@ public class UserScreen extends Composite {
             String category = searchTerms.getItemText(searchTerms.getSelectedIndex());
             if(category.equalsIgnoreCase("Email")) {
                 for(Student s : origStudentList) {
-                    if(s.getEmail().contains(contains)) {
+                    if(s.getEmail().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
@@ -841,7 +856,7 @@ public class UserScreen extends Composite {
 
             else if(category.equalsIgnoreCase("First Name")) {
                 for(Student s : origStudentList) {
-                    if(s.getFirstName().contains(contains)) {
+                    if(s.getFirstName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
@@ -849,7 +864,7 @@ public class UserScreen extends Composite {
 
             else if(category.equalsIgnoreCase("Last Name")) {
                 for(Student s : origStudentList) {
-                    if(s.getLastName().contains(contains)) {
+                    if(s.getLastName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
@@ -865,7 +880,7 @@ public class UserScreen extends Composite {
 
             else if(category.equalsIgnoreCase("Country")) {
                 for(Student s : origStudentList) {
-                    if(s.getCountry().contains(contains)) {
+                    if(s.getCountry().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
@@ -881,7 +896,7 @@ public class UserScreen extends Composite {
 
             else if(category.equalsIgnoreCase("School")) {
                 for(Student s : origStudentList) {
-                    if(s.getFirstName().contains(contains)) {
+                    if(s.getFirstName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
@@ -889,7 +904,7 @@ public class UserScreen extends Composite {
 
             else if(category.equalsIgnoreCase("Lecturer's First Name")) {
                 for(Student s : origStudentList) {
-                    if(s.getLecturerFirstName().contains(contains)) {
+                    if(s.getLecturerFirstName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
@@ -897,7 +912,7 @@ public class UserScreen extends Composite {
 
             else if(category.equalsIgnoreCase("Lecturer's Last Name")) {
                 for(Student s : origStudentList) {
-                    if(s.getLecturerLastName().contains(contains)) {
+                    if(s.getLecturerLastName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
@@ -905,7 +920,7 @@ public class UserScreen extends Composite {
 
             else if(category.equalsIgnoreCase("Lecturer's Email")) {
                 for(Student s : origStudentList) {
-                    if(s.getLecturerEmail().contains(contains)) {
+                    if(s.getLecturerEmail().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
@@ -913,7 +928,7 @@ public class UserScreen extends Composite {
 
             else if(category.equalsIgnoreCase("Language")) {
                 for(Student s : origStudentList) {
-                    if(s.getLanguage().contains(contains)) {
+                    if(s.getLanguage().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
