@@ -40,7 +40,6 @@
                 <g:Button ui:field="timeSlotButton" text="Assign"/>
             </td>
         </tr>
-
             <tr>
                <td>
                     <g:Button ui:field="deleteButton" text="Delete"/>

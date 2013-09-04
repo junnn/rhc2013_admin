@@ -103,6 +103,29 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
     }
 
     @Override
+    public boolean resetPassword(String password, String email) throws IllegalArgumentException {
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+        try {
+            session.beginTransaction();
+
+            Criteria criteria = session.createCriteria(Student.class);
+            criteria.add(Restrictions.eq("email", email.toLowerCase()));
+            Student student = (Student)criteria.uniqueResult();
+
+            student.setPassword(SecurityUtil.hashPassword(password));
+            session.update(student);
+            session.getTransaction().commit();
+
+            return true;
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            return false;
+        }
+    }
+
+    @Override
     public Boolean assignTimeSlot(List<Student> students, String timeSlot) throws IllegalArgumentException {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();

@@ -330,14 +330,6 @@ public class TimeslotScreen extends Composite {
 
         }
 
-//        else{
-//            timeSlotList.clear();
-//            timeSlotList.insertItem("Please Select a Time Slot",0);
-//            timeSlotList.insertItem("24 October 2013, 14:00PM to 15.00PM",1);
-//            timeSlotList.insertItem("24 October 2013, 16:00PM to 17.00PM",2);
-//            timeSlotList.setItemSelected(0, true);
-
-//        }
     }
 
     @UiHandler("timeSlotList")
@@ -417,7 +409,7 @@ public class TimeslotScreen extends Composite {
 
     @UiHandler("countryField")
     public void handleCountryChange(ChangeEvent event) {
-        String contains =  countryField.getItemText(countryField.getSelectedIndex());
+        String contains = countryField.getItemText(countryField.getSelectedIndex());
         String country = null;
         list.clear();
         switch (countryField.getSelectedIndex()) {
@@ -476,7 +468,6 @@ public class TimeslotScreen extends Composite {
                     if (s.getCountry().contains(contains)){
                         list.add(s);
                     }
-
                 }
                 regionField.setSelectedIndex(0);
                 noTimeslotLabel.setText("");
@@ -507,14 +498,13 @@ public class TimeslotScreen extends Composite {
                 countContestant(country,null);
                 break;
         }
-
-            if(list.size() == 0){
-                timeslotCellTable.setRowCount(0);
-            }
-            else{
-                provider.getList().clear();
-                provider.getList().addAll(list);
-            }
+        if(list.size() == 0){
+            timeslotCellTable.setRowCount(0);
+        }
+        else{
+        provider.getList().clear();
+        provider.getList().addAll(list);
+        }
     }
 
     @UiHandler("timeSlotButton")
@@ -574,6 +564,7 @@ public class TimeslotScreen extends Composite {
             // Beijing
             case 1:
                 region = "Beijing";
+
                 list.clear();
                 for (Student s : origStudentList){
                     if (s.getCountry().contains(contains)){
@@ -842,8 +833,5 @@ public class TimeslotScreen extends Composite {
             LongDate = "Error";
             return LongDate;
         }
-
     }
-
-
 }
