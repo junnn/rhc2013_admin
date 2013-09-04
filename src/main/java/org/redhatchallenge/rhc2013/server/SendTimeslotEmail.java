@@ -16,17 +16,18 @@ import java.nio.file.Paths;
  * Created with IntelliJ IDEA.
  * User: Jun
  * Date: 4/9/13
- * Time: 4:48 PM
+ * Time: 5:40 PM
  * To change this template use File | Settings | File Templates.
+ *
  */
-public class SendPasswordResetEmail implements Runnable{
+public class SendTimeslotEmail implements Runnable {
     private final ServletContext servletContext;
     private final String email;
-    private final String password;
+    private final String timeslot;
 
-    SendPasswordResetEmail(String email,String password, ServletContext servletContext) {
+    SendTimeslotEmail(String email,String timeslot, ServletContext servletContext) {
         this.email = email;
-        this.password = password;
+        this.timeslot = timeslot;
         this.servletContext = servletContext;
     }
 
@@ -34,7 +35,6 @@ public class SendPasswordResetEmail implements Runnable{
     public void run() {
 
         String html = null;
-
 
         Session currentSession = HibernateUtil.getSessionFactory().getCurrentSession();
         currentSession.beginTransaction();
@@ -45,23 +45,23 @@ public class SendPasswordResetEmail implements Runnable{
 
         try {
             if (student.getLanguage().equalsIgnoreCase("English")) {
-                String path = servletContext.getRealPath("emails/reset_en.html");
+                String path = servletContext.getRealPath("emails/timeslot_en.html");
                 html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                html = html.replaceAll("REPLACEME", password);
+                html = html.replaceAll("REPLACEME", timeslot);
             } else if (student.getLanguage().equalsIgnoreCase("Chinese (Simplified)")) {
-                String path = servletContext.getRealPath("emails/reset_ch.html");
+                String path = servletContext.getRealPath("emails/timeslot_ch.html");
                 html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                html = html.replaceAll("REPLACEME", password);
+                html = html.replaceAll("REPLACEME", timeslot);
             } else if (student.getLanguage().equals("Chinese (Traditional)")) {
-                String path = servletContext.getRealPath("emails/reset_zh.html");
+                String path = servletContext.getRealPath("emails/timeslot_zh.html");
                 html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                html = html.replaceAll("REPLACEME", password);
+                html = html.replaceAll("REPLACEME", timeslot);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        EmailUtil.sendEmail("Password Reset", html, "Your client does not support HTML messages, your password is " +password,
+        EmailUtil.sendEmail("Timeslot Assignment", html, "Your client does not support HTML messages, your password is " +timeslot,
                 email);
 
         currentSession.close();

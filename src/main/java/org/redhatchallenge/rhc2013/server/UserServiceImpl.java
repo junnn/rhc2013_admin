@@ -134,8 +134,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
         session.beginTransaction();
         try {
             for(Student s : students) {
+                String email = s.getEmail();
                 s.setTimeslot(convertTimeSlotOthers(timeSlot));
                 session.update(s);
+
+                Thread thread = new Thread(new SendTimeslotEmail(email, timeSlot, getServletContext()));
+                thread.start();
             }
             session.getTransaction().commit();
             return true;
