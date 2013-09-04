@@ -768,6 +768,20 @@ public class UserScreen extends Composite {
             }
         });
 
+        verifiedColumn.setSortable(true);
+        sortHandler.setComparator(verifiedColumn, new Comparator<Student>() {
+            @Override
+            public int compare(Student o1, Student o2) {
+                if (o1 == o2) {
+                    return 0;
+                }
+                if (o1 != null) {
+                    return (o2 != null) ? o1.getVerified().compareTo(o2.getVerified()) : 1;
+                }
+                return -1;
+            }
+        });
+
         cellTable.addColumn(selectColumn, selectAllHeader);
         cellTable.addColumn(emailColumn, "Email");
         cellTable.addColumn(firstNameColumn, "First Name");
