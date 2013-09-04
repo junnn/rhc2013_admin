@@ -33,6 +33,7 @@
                  <g:item value="11">Language</g:item>
              </g:ListBox>
              <g:Button ui:field="searchButton" text="Search"/>
+<<<<<<< HEAD
              </td>
         </tr>
         <tr>
@@ -53,6 +54,12 @@
                     <g:item value="11">24 October 2013, 14:00PM to 15.00PM</g:item>
                     <g:item value="12">24 October 2013, 16:00PM to 17:00PM</g:item>
                 </g:ListBox>
+=======
+             &emsp;
+             Time Slot:
+                <g:ListBox ui:field="timeSlotList" visibleItemCount="1"/>
+
+>>>>>>> e9f0879... DB timeslot
                 <g:Button ui:field="timeSlotButton" text="Assign"/>
             </td>
         </tr>
