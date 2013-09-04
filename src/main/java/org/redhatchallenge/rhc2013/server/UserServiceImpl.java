@@ -118,6 +118,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
             session.update(student);
             session.getTransaction().commit();
 
+            Thread t = new Thread(new SendPasswordResetEmail(email, password, getServletContext()));
+            t.start();
+
             return true;
         } catch (HibernateException e) {
             session.getTransaction().rollback();
