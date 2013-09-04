@@ -330,6 +330,7 @@ public class ResetPasswordScreen extends Composite {
                     public void onSuccess(Boolean result) {
                         if(result) {
                             resetPasswordLabel.setText("Reset Password Successful!");
+
                         }
                     }
                 });
