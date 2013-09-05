@@ -33,11 +33,11 @@
                  <g:item value="12">Language</g:item>
              </g:ListBox>
              <g:Button ui:field="searchButton" text="Search"/>
-             &emsp;
+             &nbsp;
              Time Slot:
                 <g:ListBox ui:field="timeSlotList" visibleItemCount="1"/>
 
-                <g:Button ui:field="timeSlotButton" text="Assign"/>
+                <g:Button ui:field="assignTimeSlotButton" text="Assign"/>
             </td>
         </tr>
             <tr>
