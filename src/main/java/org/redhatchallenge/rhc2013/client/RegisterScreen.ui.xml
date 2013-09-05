@@ -130,10 +130,14 @@
                </tr>
                <tr><td width="174">&nbsp;</td></tr>
                <tr>
-                   <td align="right"> <g:Button ui:field="registerButton" text="Create"/></td>
+                   <td colspan="2"><FONT COLOR="red"><g:Label ui:field="messageLabel"/></FONT></td>
                </tr>
+           </table>
+       </center>
+        <center>
+            <table>
                <tr>
-                   <td colspan="4"><g:Label ui:field="messageLabel"/></td>
+                   <td align="right"> <g:Button ui:field="registerButton" text="Create"/></td>
                </tr>
            </table>
        </center>
