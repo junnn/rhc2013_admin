@@ -4,16 +4,14 @@
     <g:HTMLPanel>
         <div id="header">
             <center>
-                <table>
-                    <tr>
-                        <td width="130"><g:Hyperlink ui:field="home" text="Home Screen"/></td>
-                        <td width="150"><g:Hyperlink ui:field="addContestant" text="Register Contestant"/></td>
-                        <td width="140"><g:Hyperlink ui:field="timeslotManagement" text="Assign TimeSlot"/></td>
-                        <td width="175"><g:Hyperlink ui:field="changeTimimgOfSlot" text="Change TimeSlot Timing"/></td>
-                        <td width="150"><g:Hyperlink ui:field="resetPassword" text="Reset Password"/></td>
-                        <td width="150"><g:Hyperlink ui:field="massEmailSending" text="Sending Email"/></td>
-                    </tr>
-                </table>
+                <g:MenuBar ui:field="menuBar">
+                    <g:MenuItem ui:field="menuItem1">Home</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem2">Add Contestant</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem3">Mass Assign TimeSlot</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem4">View Contestant per TimeSlot</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem5">Reset Password</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem6">Send Email</g:MenuItem>
+                </g:MenuBar>
             </center>
         </div>
     </g:HTMLPanel>
