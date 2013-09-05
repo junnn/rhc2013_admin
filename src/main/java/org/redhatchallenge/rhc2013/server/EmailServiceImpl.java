@@ -29,23 +29,23 @@ public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailS
                 if(s.getLanguage().equalsIgnoreCase("English")) {
                     String path = getServletContext().getRealPath("emails/verified_en.html");
                     html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                    html = html.replaceAll("REPLACE1", "Hi " + s.getLastName() + ",");
+                    html = html.replaceAll("REPLACE1", "Hi " + s.getFirstName() + ",");
                     html = html.replaceAll("REPLACE2", content);
 
                 }
 
                 else if(s.getLanguage().equalsIgnoreCase("Chinese (Simplified)")) {
-                    String path = getServletContext().getRealPath("emails/verified_ch.html");
+                    String path = getServletContext().getRealPath("emails/verified_en.html");
                     html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                    html = html.replaceAll("REPLACE1", "您好，" + s.getLastName());
+                    html = html.replaceAll("REPLACE1", s.getFirstName() + " ，您好");
                     html = html.replaceAll("REPLACE2", content);
 
                 }
 
                 else if(s.getLanguage().equals("Chinese (Traditional)")) {
-                    String path = getServletContext().getRealPath("emails/verified_zh.html");
+                    String path = getServletContext().getRealPath("emails/verified_en.html");
                     html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                    html = html.replaceAll("REPLACE1", "您好，" + s.getLastName());
+                    html = html.replaceAll("REPLACE1", s.getFirstName() + "，您好");
                     html = html.replaceAll("REPLACE2", content);
                 }
 
