@@ -45,7 +45,6 @@ public class RegisterScreen extends Composite {
     @UiField Button registerButton;
     @UiField CheckBox verifiedField;
     @UiField Button generatePasswordButton;
-    @UiField Button backButton;
     @UiField Label messageLabel;
 
     //Validation Error Labels
@@ -192,11 +191,6 @@ public class RegisterScreen extends Composite {
         }
     }
 
-    @UiHandler("backButton")
-    public void handleBackButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new UserScreen());
-    }
-
     private void registerStudent() {
 
         final String email = emailField.getText();
@@ -238,7 +232,7 @@ public class RegisterScreen extends Composite {
             @Override
             public void onSuccess(Boolean bool) {
                 if(bool) {
-                    messageLabel.setText("Successful");
+                    messageLabel.setText("Contestant Created Successfully!");
                     emailField.setText("");
                     passwordField.setText("");
                     confirmPasswordField.setText("");
