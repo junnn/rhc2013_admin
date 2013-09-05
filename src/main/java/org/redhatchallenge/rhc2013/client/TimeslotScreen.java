@@ -6,6 +6,7 @@ import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -301,8 +302,13 @@ public class TimeslotScreen extends Composite {
         timeslotCellTable.addColumn(emailColumn, "Email");
         timeslotCellTable.addColumn(countryColumn, "Region");
         timeslotCellTable.addColumn(timeSlotColumn, "Time Slot");
-
         timeslotCellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Student> createCheckboxManager(timeslotCellTable.getColumnIndex(selectColumn)));
+
+        timeslotCellTable.setWidth("45%", true);
+        timeslotCellTable.setColumnWidth(selectColumn, 6.0, Style.Unit.PX);
+        timeslotCellTable.setColumnWidth(emailColumn, 15.0, Style.Unit.PX);
+        timeslotCellTable.setColumnWidth(countryColumn, 12.0, Style.Unit.PX);
+        timeslotCellTable.setColumnWidth(timeSlotColumn, 12.0, Style.Unit.PX);
     }
 
 
