@@ -38,6 +38,7 @@ public class MassEmailScreen extends Composite {
 
     private List<Student> studentList;
     private List<Student> emailList = new ArrayList<Student>();
+    private String contest1;
 
 
     public MassEmailScreen(){
@@ -95,10 +96,14 @@ public class MassEmailScreen extends Composite {
 
     @UiHandler("sendEmail")
     public void handleSendEmailButtonClick(ClickEvent event) {
+        String contents[] = contentField.getText().split("\n");
+        contest1 = "";
+        for (int i =0; i<contents.length; i ++){
+            contest1 = contest1 + contents[i] + "<br/>";
+        }
 
-//        emailList = getStudentEmail();
         if(emailList.size() != 0){
-            emailService.massEmailSending(emailList,subjectField.getText(),contentField.getText(), new AsyncCallback<Boolean>() {
+            emailService.massEmailSending(emailList,subjectField.getText(),contest1, new AsyncCallback<Boolean>() {
                 @Override
                 public void onFailure(Throwable throwable) {
                     errorLabel.setText("Unable to Send Mail, Please Try Again later");
@@ -114,8 +119,4 @@ public class MassEmailScreen extends Composite {
             errorLabel.setText("Please Select a Target Group of Contestant");
         }
     }
-
-
-
-
 }
