@@ -1,0 +1,18 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <g:HTMLPanel>
+        <div id="header">
+            <center>
+                <g:MenuBar ui:field="menuBar">
+                    <g:MenuItem ui:field="menuItem1">Home</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem2">Add Contestant</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem3">Mass Assign TimeSlot</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem4">View Contestant per TimeSlot</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem5">Reset Password</g:MenuItem>
+                    <g:MenuItem ui:field="menuItem6">Send Email</g:MenuItem>
+                </g:MenuBar>
+            </center>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>
