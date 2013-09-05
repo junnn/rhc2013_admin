@@ -8,7 +8,7 @@
         <center><table>
         <tr><td>
             <p><center>
-                <p><font size="6"><b>Time Management</b></font></p>
+                <p><font size="6"><b>Timeslot Management</b></font></p>
                 <g:Label ui:field="timeslotLabel"/>
                 <g:Label ui:field="noTimeslotLabel"/>
             </center></p>
@@ -51,9 +51,12 @@
                         <br><g:Label ui:field="errorLabel"/></br>
                     </td>
                 </tr>
+            </table>
+        </center>
+        <center>
                 <tr><td>&nbsp;</td></tr>
         <c:CellTable ui:field="timeslotCellTable"/>
         <z:MySimplePager location="CENTER" fastForwardRows="0" showFastForwardButton="false" showLastPageButton="true"  ui:field="pager"/>
-        </table></center>
+         </center>
     </g:HTMLPanel>
 </ui:UiBinder>

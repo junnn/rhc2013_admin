@@ -12,7 +12,7 @@
                 &nbsp;
                <tr>
                    <td>Email Address:</td>
-                   <td><g:TextBox ui:field="emailField"/></td>
+                   <td><g:TextBox ui:field="emailField" maxLength="50"/></td>
                </tr>
                <tr>
                    <td width="174">&nbsp;</td>
@@ -20,7 +20,7 @@
                </tr>
                <tr>
                    <td>Password:</td>
-                   <td><g:TextBox ui:field="passwordField"/>
+                   <td><g:TextBox ui:field="passwordField" maxLength="72"/>
                    <g:Button ui:field="generatePasswordButton" text="Generate Password"/></td>
                </tr>
                <tr>
@@ -28,8 +28,8 @@
                    <td><FONT COLOR="red"><g:Label ui:field="passwordLabel"/></FONT></td>
                </tr>
                <tr>
-                   <td> Confirm Password: </td>
-                   <td><g:TextBox ui:field="confirmPasswordField"/></td>
+                   <td> Confirm Password:</td>
+                   <td><g:TextBox ui:field="confirmPasswordField" maxLength="72"/></td>
                </tr>
                <tr>
                    <td width="174">&nbsp;</td>
@@ -37,7 +37,7 @@
                </tr>
                <tr>
                    <td>First Name:</td>
-                   <td><g:TextBox ui:field="firstNameField"/></td>
+                   <td><g:TextBox ui:field="firstNameField" maxLength="30"/></td>
                </tr>
                <tr>
                    <td width="174">&nbsp;</td>
@@ -45,7 +45,7 @@
                </tr>
                <tr>
                    <td>Last Name:</td>
-                   <td><g:TextBox ui:field="lastNameField"/></td>
+                   <td><g:TextBox ui:field="lastNameField" maxLength="30"/></td>
                </tr>
                <tr>
                    <td width="174">&nbsp;</td>
@@ -84,7 +84,7 @@
                            <g:item value="5">852</g:item>
                            <g:item value="6">886</g:item>
                        </g:ListBox>
-                       <g:TextBox ui:field="contactField"/>
+                       <g:TextBox ui:field="contactField" maxLength="15"/>
                    </td>
                </tr>
                <tr><td width="174">&nbsp;</td>
@@ -92,7 +92,7 @@
                </tr>
                <tr>
                    <td>School:</td>
-                   <td><g:TextBox ui:field="schoolField"/></td>
+                   <td><g:TextBox ui:field="schoolField" maxLength="50"/></td>
                </tr>
                <tr>
                    <td width="174">&nbsp;</td>
@@ -100,17 +100,17 @@
                </tr>
                <tr>
                    <td>Lecturer's First Name: </td>
-                   <td><g:TextBox ui:field="lecturerFirstNameField"/></td>
+                   <td><g:TextBox ui:field="lecturerFirstNameField" maxLength="30"/></td>
                </tr>
                <tr><td width="174">&nbsp;</td></tr>
                <tr>
                    <td>Lecturer's Last Name: </td>
-                   <td><g:TextBox ui:field="lecturerLastNameField"/></td>
+                   <td><g:TextBox ui:field="lecturerLastNameField" maxLength="30"/></td>
                </tr>
                <tr><td width="174">&nbsp;</td></tr>
                <tr>
                    <td>Lecturer's Email: </td>
-                   <td><g:TextBox ui:field="lecturerEmailField"/></td>
+                   <td><g:TextBox ui:field="lecturerEmailField" maxLength="50"/></td>
                </tr>
                <tr><td width="174">&nbsp;</td></tr>
                <tr>
@@ -130,10 +130,14 @@
                </tr>
                <tr><td width="174">&nbsp;</td></tr>
                <tr>
-                   <td align="right"> <g:Button ui:field="registerButton" text="Create"/></td>
+                   <td colspan="2"><FONT COLOR="red"><g:Label ui:field="messageLabel"/></FONT></td>
                </tr>
+           </table>
+       </center>
+        <center>
+            <table>
                <tr>
-                   <td colspan="4"><g:Label ui:field="messageLabel"/></td>
+                   <td align="right"> <g:Button ui:field="registerButton" text="Create"/></td>
                </tr>
            </table>
        </center>
