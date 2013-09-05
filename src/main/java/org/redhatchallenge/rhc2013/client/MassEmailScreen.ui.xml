@@ -6,43 +6,43 @@
              xmlns:z="urn:import:org.redhatchallenge.rhc2013.client">
     <g:HTMLPanel>
         <center>
-            <table style="width: 563px">
-                &nbsp;
+            <table style="width: 700px">
                 <p>
-                    <p><font size="6"><b>User Creation</b></font></p>
+                    <p><font size="6"><b>Email Sending</b></font></p>
                 </p>
-                &nbsp;
+                <tr><td>&nbsp;</td></tr>
                 <tr>
+                    <td width="20">Language:</td>
                     <td>
                         <g:ListBox ui:field="emailLanguage" visibleItemCount="1">
-                            <g:item value="1">Target Group of Contestants:</g:item>
+                            <g:item value="1">Please Select</g:item>
                             <g:item value="2">English</g:item>
                             <g:item value="3">Chinese (Simplified)</g:item>
                             <g:item value="4">Chinese (Traditional)</g:item>
                         </g:ListBox>
                     </td>
                  </tr>
-                        &nbsp;
-
-
-                <tr>
+                 <tr>
+                    <td width="20">Subject:</td>
                     <td>
-                        <g:TextBox ui:field="subjectField"/>
+                        <g:TextBox ui:field="subjectField" visibleLength="50"/>
                     </td>
                 </tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td colspan="2"><font color="red"><g:Label ui:field="errorLabel"/></font></td></tr>
+            </table>
+        </center>
+        <center>
                 <tr>
                     <td>
                         <g:TextArea ui:field="contentField"/>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <g:Button ui:field="sendEmail" text="Send"/>
-                        <g:Label ui:field="errorLabel"/>
-
-                    </td>
-                </tr>
-
-        </table></center>
+        </center>
+           <table>
+            <div id="myDiv" style="float: left; margin-left:440px;"><font color="red"><B>Notice: Email will be send to contestants whom preferred language is the same</B></font></div>
+            <div id="myDiv" style="float: right; margin-right:456px;"><g:Button ui:field="sendEmail" text="Send"/></div>
+            <div id="myDiv" style="float: left; margin-left:440px;"><font color="red"><B>as the selected language.</B></font></div>
+           </table>
     </g:HTMLPanel>
 </ui:UiBinder>
