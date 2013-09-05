@@ -59,7 +59,7 @@ public class UserScreen extends Composite {
     @UiField Label registrationLabel;
     @UiField Label verifiedLabel;
     @UiField ListBox timeSlotList;
-    @UiField Button timeSlotButton;
+    @UiField Button assignTimeSlotButton;
     @UiField Label errorLabel;
 
 
@@ -945,8 +945,8 @@ public class UserScreen extends Composite {
         }
     }
 
-    @UiHandler("timeSlotButton")
-    public void handleTimeSlotButtonClick(ClickEvent event) {
+    @UiHandler("assignTimeSlotButton")
+    public void handleAssignTimeSlotButtonClick(ClickEvent event) {
         final String timeSlot;
         if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please Select a Time Slot")){
             timeSlot = timeSlotList.getItemText(timeSlotList.getSelectedIndex());

@@ -11,6 +11,7 @@
                         <td width="140"><g:Hyperlink ui:field="timeslotManagement" text="Assign TimeSlot"/></td>
                         <td width="175"><g:Hyperlink ui:field="changeTimimgOfSlot" text="Change TimeSlot Timing"/></td>
                         <td width="150"><g:Hyperlink ui:field="resetPassword" text="Reset Password"/></td>
+                        <td width="150"><g:Hyperlink ui:field="massEmailSending" text="Sending Email"/></td>
                     </tr>
                 </table>
             </center>
