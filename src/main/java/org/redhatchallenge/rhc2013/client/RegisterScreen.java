@@ -232,7 +232,7 @@ public class RegisterScreen extends Composite {
             @Override
             public void onSuccess(Boolean bool) {
                 if(bool) {
-                    messageLabel.setText("Successful");
+                    messageLabel.setText("Contestant Created Successfulyl");
                     emailField.setText("");
                     passwordField.setText("");
                     confirmPasswordField.setText("");
