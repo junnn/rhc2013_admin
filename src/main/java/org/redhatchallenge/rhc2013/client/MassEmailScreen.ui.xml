@@ -38,6 +38,7 @@
                 <tr>
                     <td>
                         <g:Button ui:field="sendEmail" text="Send"/>
+                        <g:Button ui:field="clearText" text="Clear Content"/>
                         <g:Label ui:field="errorLabel"/>
 
                     </td>
