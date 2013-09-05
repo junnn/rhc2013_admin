@@ -61,6 +61,7 @@ public class TimeslotScreen extends Composite {
     @UiField ListBox timeSlotList;
     @UiField Button timeslotPageRefresh;
     @UiField Label errorLabel;
+    @UiField Button timeSlotButton;
 
 
     private UserServiceAsync userService = UserService.Util.getInstance();

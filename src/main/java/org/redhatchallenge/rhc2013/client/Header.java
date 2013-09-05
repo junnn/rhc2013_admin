@@ -27,6 +27,7 @@ public class Header extends Composite{
     @UiField Hyperlink changeTimimgOfSlot; //go to Change Time Screen
     @UiField Hyperlink addContestant; // go to register Screen
     @UiField Hyperlink resetPassword;
+    @UiField Hyperlink massEmailSending;
 
     public Header(){
         initWidget(UiBinder.createAndBindUi(this));
@@ -55,5 +56,10 @@ public class Header extends Composite{
     @UiHandler("resetPassword")
     public void resetPasswordLinkClick(ClickEvent event) {
         ContentContainer.INSTANCE.setContent(new ResetPasswordScreen());
+    }
+
+    @UiHandler("massEmailSending")
+    public void massEmailSendingLinkClick(ClickEvent event) {
+        ContentContainer.INSTANCE.setContent(new MassEmailScreen());
     }
 }
