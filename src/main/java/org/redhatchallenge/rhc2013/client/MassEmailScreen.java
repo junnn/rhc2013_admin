@@ -33,6 +33,7 @@ public class MassEmailScreen extends Composite {
     @UiField TextArea contentField;
     @UiField Button sendEmail;
     @UiField Button clearText;
+    @UiField Label languageLabel;
 
     private UserServiceAsync userService = UserService.Util.getInstance();
     private MassEmailServiceAsync emailService = MassEmailService.Util.getInstance();
@@ -46,7 +47,6 @@ public class MassEmailScreen extends Composite {
         initWidget(UiBinder.createAndBindUi(this));
         contentField.setCharacterWidth(85);
         contentField.setVisibleLines(30);
-
         userService.getListOfStudents(new AsyncCallback<List<Student>>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -65,7 +65,6 @@ public class MassEmailScreen extends Composite {
         emailList.clear();
         switch(emailLanguage.getSelectedIndex()){
             case 0:
-                errorLabel.setText("Please Select a Target Group");
                 break;
 
             case 1:
@@ -118,13 +117,17 @@ public class MassEmailScreen extends Composite {
                 }
             });
         }
+        else if(emailLanguage.getItemText(emailLanguage.getSelectedIndex()).equals("Please Select")){
+            languageLabel.setText("*Please select a language!");
+        }
         else{
-            errorLabel.setText("Please Select a Target Group of Contestant");
+            errorLabel.setText("*No contestant with " + emailLanguage.getItemText(emailLanguage.getSelectedIndex()) + " as their preferred!");
         }
     }
 
     @UiHandler({"emailLanguage", "subjectField", "contentField"})
     public void handleFieldClick(ClickEvent event) {
+        languageLabel.setText("");
         errorLabel.setText("");
     }
 
