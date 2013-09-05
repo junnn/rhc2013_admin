@@ -59,7 +59,7 @@ public class UserScreen extends Composite {
     @UiField Label registrationLabel;
     @UiField Label verifiedLabel;
     @UiField ListBox timeSlotList;
-    @UiField Button timeSlotButton;
+    @UiField Button assignTimeSlotButton;
     @UiField Label errorLabel;
 
 
@@ -768,6 +768,20 @@ public class UserScreen extends Composite {
             }
         });
 
+        verifiedColumn.setSortable(true);
+        sortHandler.setComparator(verifiedColumn, new Comparator<Student>() {
+            @Override
+            public int compare(Student o1, Student o2) {
+                if (o1 == o2) {
+                    return 0;
+                }
+                if (o1 != null) {
+                    return (o2 != null) ? o1.getVerified().compareTo(o2.getVerified()) : 1;
+                }
+                return -1;
+            }
+        });
+
         cellTable.addColumn(selectColumn, selectAllHeader);
         cellTable.addColumn(emailColumn, "Email");
         cellTable.addColumn(firstNameColumn, "First Name");
@@ -931,8 +945,8 @@ public class UserScreen extends Composite {
         }
     }
 
-    @UiHandler("timeSlotButton")
-    public void handleTimeSlotButtonClick(ClickEvent event) {
+    @UiHandler("assignTimeSlotButton")
+    public void handleAssignTimeSlotButtonClick(ClickEvent event) {
         final String timeSlot;
         if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please Select a Time Slot")){
             timeSlot = timeSlotList.getItemText(timeSlotList.getSelectedIndex());

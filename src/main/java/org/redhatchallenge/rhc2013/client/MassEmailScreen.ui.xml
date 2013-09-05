@@ -1,0 +1,48 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:z="urn:import:org.redhatchallenge.rhc2013.client">
+    <g:HTMLPanel>
+        <center>
+            <table style="width: 563px">
+                &nbsp;
+                <p>
+                    <p><font size="6"><b>User Creation</b></font></p>
+                </p>
+                &nbsp;
+                <tr>
+                    <td>
+                        <g:ListBox ui:field="emailLanguage" visibleItemCount="1">
+                            <g:item value="1">Target Group of Contestants:</g:item>
+                            <g:item value="2">English</g:item>
+                            <g:item value="3">Chinese (Simplified)</g:item>
+                            <g:item value="4">Chinese (Traditional)</g:item>
+                        </g:ListBox>
+                    </td>
+                 </tr>
+                        &nbsp;
+
+
+                <tr>
+                    <td>
+                        <g:TextBox ui:field="subjectField"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <g:TextArea ui:field="contentField"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <g:Button ui:field="sendEmail" text="Send"/>
+                        <g:Label ui:field="errorLabel"/>
+
+                    </td>
+                </tr>
+
+        </table></center>
+    </g:HTMLPanel>
+</ui:UiBinder>
