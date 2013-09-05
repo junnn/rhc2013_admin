@@ -32,6 +32,7 @@ public class MassEmailScreen extends Composite {
     @UiField TextBox subjectField;
     @UiField TextArea contentField;
     @UiField Button sendEmail;
+    @UiField Button clearText;
 
     private UserServiceAsync userService = UserService.Util.getInstance();
     private MassEmailServiceAsync emailService = MassEmailService.Util.getInstance();
@@ -103,6 +104,7 @@ public class MassEmailScreen extends Composite {
         }
 
         if(emailList.size() != 0){
+            sendEmail.setEnabled(false);
             emailService.massEmailSending(emailList,subjectField.getText(),contest1, new AsyncCallback<Boolean>() {
                 @Override
                 public void onFailure(Throwable throwable) {
@@ -112,6 +114,7 @@ public class MassEmailScreen extends Composite {
                 @Override
                 public void onSuccess(Boolean aBoolean) {
                     errorLabel.setText("Mail Sent");
+                    sendEmail.setEnabled(true);
                 }
             });
         }
@@ -119,4 +122,15 @@ public class MassEmailScreen extends Composite {
             errorLabel.setText("Please Select a Target Group of Contestant");
         }
     }
+
+    @UiHandler({"emailLanguage", "subjectField", "contentField"})
+    public void handleFieldClick(ClickEvent event) {
+        errorLabel.setText("");
+    }
+
+    @UiHandler("clearText")
+    public void handleClearTextButton(ClickEvent event){
+        contentField.setText("");
+    }
+
 }

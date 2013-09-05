@@ -1,0 +1,51 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:z="urn:import:org.redhatchallenge.rhc2013.client">
+    <g:HTMLPanel>
+        <center>
+            <table style="width: 700px">
+                <p>
+                    <p><font size="6"><b>Email Sending</b></font></p>
+                </p>
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td width="20">Language:</td>
+                    <td>
+                        <g:ListBox ui:field="emailLanguage" visibleItemCount="1">
+                            <g:item value="1">Please Select</g:item>
+                            <g:item value="2">English</g:item>
+                            <g:item value="3">Chinese (Simplified)</g:item>
+                            <g:item value="4">Chinese (Traditional)</g:item>
+                        </g:ListBox>
+                    </td>
+                 </tr>
+                 <tr>
+                    <td width="20">Subject:</td>
+                    <td>
+                        <g:TextBox ui:field="subjectField" visibleLength="50"/>
+                    </td>
+                </tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td colspan="2"><font color="red"><g:Label ui:field="errorLabel"/></font></td></tr>
+            </table>
+        </center>
+        <center>
+                <tr>
+                    <td>
+                        <g:TextArea ui:field="contentField"/>
+                    </td>
+                </tr>
+        </center>
+           <table>
+            <div id="myDiv" style="float: left; margin-left:440px;"><font color="red"><B>Notice: Email will be send to contestants whom preferred language is the same</B></font></div>
+            <div id="myDiv" style="float: right; margin-right:456px;"><g:Button ui:field="sendEmail" text="Send"/></div>
+            <div id="myDiv" style="float: left; margin-left:440px;"><font color="red"><B>as the selected language.</B></font></div>
+              <tr>
+                  <div id="myDiv" style="float: left; margin-left:426px;"><g:Button ui:field="clearText" text="Clear Content"/></div>
+              </tr>
+           </table>
+    </g:HTMLPanel>
+</ui:UiBinder>
