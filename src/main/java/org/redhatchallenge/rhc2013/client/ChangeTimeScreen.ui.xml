@@ -7,7 +7,7 @@
 
     <g:HTMLPanel>
         <center>
-            <p><font size="6"><b>Timing Adjustment</b></font></p>
+            <p><font size="6"><b>Students per TimeSlot</b></font></p>
             <g:ListBox ui:field="listOfTiming"/>
             <c:CellTable ui:field="readOnlyCellTable"/>
             <z:MySimplePager location="CENTER" fastForwardRows="0" showFastForwardButton="false" showLastPageButton="true"  ui:field="pager"/>

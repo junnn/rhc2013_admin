@@ -4,13 +4,16 @@
     <g:HTMLPanel>
         <div id="header">
             <center>
-                <g:MenuBar ui:field="menuBar">
-                    <g:MenuItem ui:field="menuItem1">Home</g:MenuItem>
-                    <g:MenuItem ui:field="menuItem2">Add Contestant</g:MenuItem>
-                    <g:MenuItem ui:field="menuItem3">Mass Assign TimeSlot</g:MenuItem>
-                    <g:MenuItem ui:field="menuItem4">View Contestant per TimeSlot</g:MenuItem>
-                    <g:MenuItem ui:field="menuItem5">Reset Password</g:MenuItem>
-                    <g:MenuItem ui:field="menuItem6">Send Email</g:MenuItem>
+                <g:MenuBar ui:field="menuBar" animationEnabled="true" autoOpen="true">
+                    <g:MenuItem ui:field="menuItem1" text="View Contestant">
+                        <g:MenuBar vertical="true">
+                            <g:MenuItem ui:field="menuItem4" text="View Contestant per TimeSlot"></g:MenuItem>
+                        </g:MenuBar>
+                    </g:MenuItem>
+                    <g:MenuItem ui:field="menuItem2" text="Add Contestant"></g:MenuItem>
+                    <g:MenuItem ui:field="menuItem3" text="Mass Assign TimeSlot"></g:MenuItem>
+                    <g:MenuItem ui:field="menuItem5" text="Reset Password"></g:MenuItem>
+                    <g:MenuItem ui:field="menuItem6" text="Send Email"></g:MenuItem>
                 </g:MenuBar>
             </center>
         </div>
