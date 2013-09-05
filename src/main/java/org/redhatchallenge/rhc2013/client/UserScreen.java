@@ -217,24 +217,35 @@ public class UserScreen extends Composite {
         emailColumn.setFieldUpdater(new FieldUpdater<Student, String>() {
             @Override
             public void update(int index, Student object, String value) {
-                object.setEmail(value);
-                userService.updateStudentData(object, new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        caught.printStackTrace();
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if(!result) {
-                            displayErrorBox("Failed", "Update has failed");
+                if(value.equals(object.getEmail())){
+                }
+                else if(checkEmail(value) < 1) {
+                    object.setEmail(value);
+                    userService.updateStudentData(object, new AsyncCallback<Boolean>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            caught.printStackTrace();
                         }
 
-                        else {
-                            cellTable.redraw();
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            if(!result) {
+                                displayErrorBox("Failed", "Update has failed");
+                            }
+
+                            else {
+                                cellTable.redraw();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                else{
+                    Window.alert("Email Address Already Exist in the Database!");
+                    ContentContainer.INSTANCE.setContent(new UserScreen());
+
+                }
+
+
             }
         });
 
@@ -448,22 +459,33 @@ public class UserScreen extends Composite {
         contactColumn.setFieldUpdater(new FieldUpdater<Student, String>() {
             @Override
             public void update(int index, Student object, String value) {
-                object.setContact(value);
-                userService.updateStudentData(object, new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        caught.printStackTrace();
-                    }
+                if(value.equals(object.getContact())){
+                }
 
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if (!result) {
-                            displayErrorBox("Failed", "Update has failed");
-                        } else {
-                            cellTable.redraw();
+                else if(checkContact(value) < 1){
+                    object.setContact(value);
+                    userService.updateStudentData(object, new AsyncCallback<Boolean>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            caught.printStackTrace();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            if (!result) {
+                                displayErrorBox("Failed", "Update has failed");
+                            } else {
+                                cellTable.redraw();
+                            }
+                        }
+                    });
+                }
+                else{
+                    Window.alert("Contact Already Exist in the Database!");
+                    ContentContainer.INSTANCE.setContent(new UserScreen());
+                }
+
+
             }
         });
 
@@ -1152,4 +1174,28 @@ public class UserScreen extends Composite {
         Date date = new Date(unixTime);
         return date;
     }
+
+    private int checkEmail(String email){
+        int counter = 0;
+        for(Student s : studentList){
+            if(email.equals(s.getEmail())){
+                counter++;
+                break;
+            }
+        }
+        return counter;
+    }
+
+    private int checkContact(String contact){
+        int counter = 0;
+        for(Student s : studentList){
+            if(contact.equals(s.getContact())){
+                counter++;
+                break;
+            }
+        }
+        return counter;
+    }
+
+
 }
