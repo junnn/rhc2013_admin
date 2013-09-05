@@ -514,7 +514,6 @@ public class TimeslotScreen extends Composite {
         if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please Select a Time Slot")){
             timeSlot = timeSlotList.getItemText(timeSlotList.getSelectedIndex());
             if(!check.equals("0")){
-
                 userService.assignTimeSlot(selectedStudentList, timeSlot, new AsyncCallback<Boolean>() {
                     @Override
                     public void onFailure(Throwable caught) {

@@ -24,7 +24,6 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import org.redhatchallenge.rhc2013.shared.FieldVerifier;
 import org.redhatchallenge.rhc2013.shared.Student;
-import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -317,24 +316,19 @@ public class ResetPasswordScreen extends Composite {
 
         final String password = passwordField.getText();
         if (listOfSelectedStudents.size() != 0){
-            for(Student s : listOfSelectedStudents){
-                String email = s.getEmail();
+            userService.resetPassword(password, listOfSelectedStudents, new AsyncCallback<Boolean>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    resetPasswordLabel.setText("Reset Password Unsuccessful!");
+                }
 
-                userService.resetPassword(password, email, new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        resetPasswordLabel.setText("Reset Password Unsuccessful!");
+                @Override
+                public void onSuccess(Boolean result) {
+                    if(result) {
+                        resetPasswordLabel.setText("Reset Password Successful!");
                     }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if(result) {
-                            resetPasswordLabel.setText("Reset Password Successful!");
-
-                        }
-                    }
-                });
-            }
+                }
+            });
         }
 
         else{
@@ -363,6 +357,11 @@ public class ResetPasswordScreen extends Composite {
         verticalPanel.add(closeButton);
         errorBox.setWidget(verticalPanel);
         errorBox.center();
+    }
+
+    @UiHandler("refreshButton")
+    public void refreshHandler(ClickEvent event){
+        ContentContainer.INSTANCE.setContent(new ResetPasswordScreen());
     }
 
 }
