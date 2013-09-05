@@ -5,6 +5,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -16,6 +17,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -24,7 +26,6 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import org.redhatchallenge.rhc2013.shared.FieldVerifier;
 import org.redhatchallenge.rhc2013.shared.Student;
-import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,6 +49,7 @@ public class ResetPasswordScreen extends Composite {
     @UiField ListBox searchTerms;
     @UiField Button searchButton;
     @UiField Button refreshButton;
+    @UiField Button randomPasswordButton;
 
     private UserServiceAsync userService = UserService.Util.getInstance();
     private List<Student> studentList;
@@ -221,6 +223,23 @@ public class ResetPasswordScreen extends Composite {
         cellTable.addColumn(lastNameColumn, "Last Name");
         cellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Student> createCheckboxManager(cellTable.getColumnIndex(selectColumn)));
 
+        cellTable.setWidth("50%", true);
+        cellTable.setColumnWidth(selectColumn, 6.0, Style.Unit.PX);
+        cellTable.setColumnWidth(emailColumn, 20.0, Style.Unit.PX);
+        cellTable.setColumnWidth(firstNameColumn, 12.0, Style.Unit.PX);
+        cellTable.setColumnWidth(lastNameColumn, 12.0, Style.Unit.PX);
+    }
+
+    @UiHandler("randomPasswordButton")
+    public void handleGeneratePasswordButtonClick(ClickEvent event) {
+        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        StringBuilder sb = new StringBuilder( 12 );
+        for( int i = 0; i < 12; i++ )
+            sb.append( AB.charAt( Random.nextInt(AB.length()) ) );
+
+        passwordField.setText(sb.toString());
+        confirmPasswordField.setText(sb.toString());
     }
 
     @UiHandler("resetPasswordButton")
@@ -258,6 +277,11 @@ public class ResetPasswordScreen extends Composite {
         if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
             resetPassword();
         }
+    }
+
+    @UiHandler("refreshButton")
+    public void handleRefreshButtonClick(ClickEvent event) {
+        ContentContainer.INSTANCE.setContent(new ResetPasswordScreen());
     }
 
     @UiHandler("searchButton")
