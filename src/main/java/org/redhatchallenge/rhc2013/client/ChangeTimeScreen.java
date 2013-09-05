@@ -41,7 +41,6 @@ public class ChangeTimeScreen extends Composite {
     @UiField CellTable<Student> readOnlyCellTable;
     @UiField ListBox listOfTiming;
     @UiField MySimplePager pager;
-    @UiField Label testing;
 
     private UserServiceAsync userService = UserService.Util.getInstance();
     private List<Student> studentList;
@@ -177,7 +176,6 @@ public class ChangeTimeScreen extends Composite {
             for (Student s : listOfOriginStudents){
                 provider.getList().add(s);
             }
-            testing.setText("select all" + listOfOriginStudents);
         }
 
         else if (timing.equals("Without Time Slot")){
@@ -188,11 +186,14 @@ public class ChangeTimeScreen extends Composite {
                 }
             }
             provider.getList().clear();
-
-            for (Student s : timeslotListOfStudent){
-                provider.getList().add(s);
+            if(timeslotListOfStudent.size() == 0){
+                readOnlyCellTable.setRowCount(0);
             }
-            testing.setText("without" + timeslotListOfStudent);
+            else {
+                for (Student s : timeslotListOfStudent){
+                    provider.getList().add(s);
+                }
+            }
         }
 
         else {
@@ -206,10 +207,14 @@ public class ChangeTimeScreen extends Composite {
                 }
             }
             provider.getList().clear();
-            for (Student s : timeslotListOfStudent){
-                provider.getList().add(s);
+            if(timeslotListOfStudent.size() == 0){
+                readOnlyCellTable.setRowCount(0);
             }
-            testing.setText("DB" + timeslotListOfStudent);
+            else {
+                for (Student s : timeslotListOfStudent){
+                    provider.getList().add(s);
+                }
+            }
         }
     }
     private String returnLongDateTime(String date){
