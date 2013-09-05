@@ -1,12 +1,15 @@
 package org.redhatchallenge.rhc2013.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -22,44 +25,60 @@ public class Header extends Composite{
 
     private static HeaderUiBinder UiBinder = GWT.create(HeaderUiBinder.class);
 
-    @UiField Hyperlink timeslotManagement; //go to Timeslot Screen
-    @UiField Hyperlink home;    //go to User Screen
-    @UiField Hyperlink changeTimimgOfSlot; //go to Change Time Screen
-    @UiField Hyperlink addContestant; // go to register Screen
-    @UiField Hyperlink resetPassword;
-    @UiField Hyperlink massEmailSending;
+    @UiField MenuBar menuBar;
+    @UiField MenuItem menuItem1;
+    @UiField MenuItem menuItem2;
+    @UiField MenuItem menuItem3;
+    @UiField MenuItem menuItem4;
+    @UiField MenuItem menuItem5;
+    @UiField MenuItem menuItem6;
 
     public Header(){
         initWidget(UiBinder.createAndBindUi(this));
+        initMenuBar();
     }
 
-    @UiHandler("addContestant")
-    public void handleRegisterButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new RegisterScreen());
-    }
+    private void initMenuBar(){
+        menuItem1.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                ContentContainer.INSTANCE.setContent(new UserScreen());
+            }
+        });
 
-    @UiHandler("timeslotManagement")
-    public void handleTimeSlotMngButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new TimeslotScreen());
-    }
+        menuItem2.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                ContentContainer.INSTANCE.setContent(new RegisterScreen());
+            }
+        });
 
-    @UiHandler("home")
-    public void homeLinkClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new UserScreen());
-    }
+        menuItem3.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                ContentContainer.INSTANCE.setContent(new TimeslotScreen());
+            }
+        });
 
-    @UiHandler("changeTimimgOfSlot")
-    public void changeTimeLinkClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new ChangeTimeScreen());
-    }
+        menuItem4.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                ContentContainer.INSTANCE.setContent(new ChangeTimeScreen());
+            }
+        });
 
-    @UiHandler("resetPassword")
-    public void resetPasswordLinkClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new ResetPasswordScreen());
-    }
+        menuItem5.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                ContentContainer.INSTANCE.setContent(new ResetPasswordScreen());
+            }
+        });
 
-    @UiHandler("massEmailSending")
-    public void massEmailSendingLinkClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new MassEmailScreen());
+        menuItem6.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                ContentContainer.INSTANCE.setContent(new MassEmailScreen());
+            }
+        });
     }
 }
