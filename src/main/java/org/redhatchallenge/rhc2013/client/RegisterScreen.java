@@ -187,7 +187,9 @@ public class RegisterScreen extends Composite {
         }
 
         if(successCounter == 7){
+            registerButton.setEnabled(false);
             registerStudent();
+            registerButton.setEnabled(true);
         }
     }
 
