@@ -117,10 +117,20 @@ public class UserScreen extends Composite {
                     }
                 }
 
+                Boolean status = regStatus.getReg_status_bool();
+                if(status.equals(Boolean.FALSE)){
+                    regStatusButton.setText("Registration is Live");
+                }
+                else{
+                    regStatusButton.setText("Registraion is Close");
+                }
+
+
             }
         });
 
-        regStatusButton.setText("Default");
+
+
 
 
 //        if(regStatus.getReg_status_bool() == false){
@@ -1031,7 +1041,6 @@ public class UserScreen extends Composite {
 
     @UiHandler("regStatusButton")
     public void handleRegStatusClick(ClickEvent event) {
-        errorLabel.setText("Clicked");
         Boolean status = regStatus.getReg_status_bool();
         if(status.equals(Boolean.FALSE)){
             regStatus.setReg_status_bool(Boolean.TRUE);
@@ -1039,14 +1048,12 @@ public class UserScreen extends Composite {
                 @Override
                 public void onFailure(Throwable throwable) {
                     throwable.printStackTrace();
-                    verifiedLabel.setText("Fail");
 
                 }
 
                 @Override
                 public void onSuccess(Boolean aBoolean) {
                     regStatusButton.setText("Registration have Close");
-                    verifiedLabel.setText("Success");
                 }
             });
 

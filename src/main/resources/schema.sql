@@ -25,7 +25,7 @@ CREATE TABLE contestant (
 );
 
 CREATE TABLE  registration_status (
-  status_id primary key,
+  status_id serial primary key,
   reg_status_bool boolean DEFAULT FALSE NOT NULL
 );
 
