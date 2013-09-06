@@ -14,13 +14,7 @@ import org.redhatchallenge.rhc2013.client.MassEmailService;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: gerald
- * Date: 9/4/13
- * Time: 4:55 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class MassEmailScreen extends Composite {
     interface MassEmailScreenUiBinder extends UiBinder<Widget, MassEmailScreen> {
     }

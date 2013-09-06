@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -29,9 +30,11 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
+import org.redhatchallenge.rhc2013.shared.RegStatus;
 import org.redhatchallenge.rhc2013.shared.Student;
 import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
+import javax.swing.plaf.metal.MetalBorders;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -39,9 +42,7 @@ import java.util.List;
 
 import static com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
+
 public class UserScreen extends Composite {
     interface UserScreenUiBinder extends UiBinder<Widget, UserScreen> {
     }
@@ -61,6 +62,7 @@ public class UserScreen extends Composite {
     @UiField ListBox timeSlotList;
     @UiField Button assignTimeSlotButton;
     @UiField Label errorLabel;
+    @UiField Button regStatusButton;
 
 
     private UserServiceAsync userService = UserService.Util.getInstance();
@@ -69,6 +71,7 @@ public class UserScreen extends Composite {
     private ListDataProvider<Student> provider;
     private List<Student> listOfSelectedStudents = new ArrayList<Student>();
     private List<TimeSlotList> ListofTimeSlot;
+    private RegStatus regStatus;
     private List<String> dateList = new ArrayList<String>();
     private static final ProvidesKey<Student> KEY_PROVIDER = new ProvidesKey<Student>() {
         @Override
@@ -102,6 +105,30 @@ public class UserScreen extends Composite {
 
         });
 
+        userService.getRegStatus(new AsyncCallback<List<RegStatus>>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(List<RegStatus> regStatuses) {
+                for(RegStatus r : regStatuses){
+                    if(r.getStatus_id() == 1){
+                        regStatus = r;
+                        if(regStatus.getReg_status_bool() == false){
+                            regStatusButton.setText("Registration is Live");
+                        }
+                        else{
+                            regStatusButton.setText("Registration have Close");
+                        }
+                    }
+                }
+
+            }
+        });
+
+
 
         userService.getListOfTimeSlot(new AsyncCallback<List<TimeSlotList>>() {
             @Override
@@ -112,14 +139,14 @@ public class UserScreen extends Composite {
             @Override
             public void onSuccess(List<TimeSlotList> timeSlotLists) {
                 ListofTimeSlot = new ArrayList<TimeSlotList>(timeSlotLists);
-                for(TimeSlotList d : ListofTimeSlot){
+                for (TimeSlotList d : ListofTimeSlot) {
                     Date date = convertTimeSlot(d.getTimeslot());
                     String formatedDate = returnLongDateTime(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT).format(date));
                     dateList.add(formatedDate);
                 }
-                timeSlotList.insertItem("Select All", 0);
-                for(int i = 0; i < dateList.size(); i++){
-                    timeSlotList.insertItem(dateList.get(i).toString(),i+1);
+                timeSlotList.insertItem("Please select a time slot", 0);
+                for (int i = 0; i < dateList.size(); i++) {
+                    timeSlotList.insertItem(dateList.get(i).toString(), i + 1);
                 }
             }
         });
@@ -970,7 +997,7 @@ public class UserScreen extends Composite {
     @UiHandler("assignTimeSlotButton")
     public void handleAssignTimeSlotButtonClick(ClickEvent event) {
         final String timeSlot;
-        if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please Select a Time Slot")){
+        if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please select a time slot")){
             timeSlot = timeSlotList.getItemText(timeSlotList.getSelectedIndex());
             userService.assignTimeSlot(listOfSelectedStudents, timeSlot, new AsyncCallback<Boolean>() {
                 @Override
@@ -1002,43 +1029,74 @@ public class UserScreen extends Composite {
 
     }
 
-    @UiHandler("deleteButton")
-    public void handleDeleteButtonClick(ClickEvent event) {
-       Boolean delete =  Window.confirm("Are you sure you want to delete");
-        if (delete.equals(true)){
-
-            userService.deleteStudents(listOfSelectedStudents, new AsyncCallback<Boolean>() {
+    @UiHandler("regStatusButton")
+    public void handleRegStatusClick(ClickEvent event) {
+        Boolean status = regStatus.getReg_status_bool();
+        if(status.equals(Boolean.FALSE)){
+            regStatus.setReg_status_bool(Boolean.TRUE);
+            userService.updateRegistraionStatus(regStatus, new AsyncCallback<Boolean>() {
                 @Override
-                public void onFailure(Throwable caught) {
-                    caught.printStackTrace();
+                public void onFailure(Throwable throwable) {
+                    throwable.printStackTrace();
+                    verifiedLabel.setText("Fail");
+
                 }
 
                 @Override
-                public void onSuccess(Boolean result) {
-                    if(!result) {
-                        displayErrorBox("Error", "Error with deleting users");
-                    }
-
-                    else {
-                        List<Student> toBeRemoved = new ArrayList<Student>();
-                        for(Student s : studentList) {
-                            if(listOfSelectedStudents.contains(s)) {
-                                toBeRemoved.add(s);
-                            }
-                        }
-                        studentList.removeAll(toBeRemoved);
-                        provider.setList(studentList);
-                        listOfSelectedStudents.clear(); //remove list of selected & deleted users
-                        setUserCount();
-                    }
+                public void onSuccess(Boolean aBoolean) {
+                    regStatusButton.setText("Registration have Close");
                 }
             });
+
         }
-        else {
-            Window.alert("User not Deleted.");
-        }
+        else{
+            regStatus.setReg_status_bool(Boolean.FALSE);
 
 
+            userService.updateRegistraionStatus(regStatus, new AsyncCallback<Boolean>() {
+                @Override
+                public void onFailure(Throwable throwable) {
+                    throwable.printStackTrace();
+
+                }
+
+                @Override
+                public void onSuccess(Boolean aBoolean) {
+                    regStatusButton.setText("Registration is Live");
+                }
+            });
+
+        }
+
+    }
+
+    public void deleteFunction() {
+        userService.deleteStudents(listOfSelectedStudents, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                caught.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                if(!result) {
+                    displayErrorBox("Error", "Error with deleting users");
+                }
+
+                else {
+                    List<Student> toBeRemoved = new ArrayList<Student>();
+                    for(Student s : studentList) {
+                        if(listOfSelectedStudents.contains(s)) {
+                            toBeRemoved.add(s);
+                        }
+                    }
+                    studentList.removeAll(toBeRemoved);
+                    provider.setList(studentList);
+                    listOfSelectedStudents.clear(); //remove list of selected & deleted users
+                    setUserCount();
+                }
+            }
+        });
     }
 
     @UiHandler("exportButton")
@@ -1197,5 +1255,41 @@ public class UserScreen extends Composite {
         return counter;
     }
 
+    @UiHandler("deleteButton")
+    public void confirmDelete(ClickEvent event) {
+        final DialogBox confirmBox = new DialogBox();
+        confirmBox.setText("Deleting Users");
+        final HTML messageLabel = new HTML();
+        messageLabel.setHTML("Are you sure you want to delete the contestants?");
+        HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+        final Button cancelButton = new Button("Cancel");
+        final Button okButton  = new Button("Delete");
+
+        cancelButton.setEnabled(true);
+        okButton.setEnabled(true);
+        cancelButton.getElement().setId("cancel");
+        okButton.getElement().setId("delete");
+
+        cancelButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                confirmBox.hide();
+            }
+        });
+        okButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                deleteFunction();
+                confirmBox.hide();
+            }
+        });
+
+        horizontalPanel.add(messageLabel);
+        horizontalPanel.add(cancelButton);
+        horizontalPanel.add(okButton);
+        confirmBox.setWidget(horizontalPanel);
+        confirmBox.center();
+    }
 
 }

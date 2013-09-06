@@ -19,9 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.redhatchallenge.rhc2013.shared.FieldVerifier;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
+
 public class RegisterScreen extends Composite {
     interface RegisterScreenUiBinder extends UiBinder<Widget, RegisterScreen> {
     }

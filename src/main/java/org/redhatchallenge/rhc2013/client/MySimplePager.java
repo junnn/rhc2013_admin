@@ -4,13 +4,6 @@ import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.view.client.Range;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Jun
- * Date: 26/8/13
- * Time: 10:56 AM
- * To change this template use File | Settings | File Templates.
- */
 public class MySimplePager extends SimplePager{
 
 

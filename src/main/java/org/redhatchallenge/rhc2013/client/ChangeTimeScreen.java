@@ -25,13 +25,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Jun
- * Date: 3/9/13
- * Time: 12:51 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class ChangeTimeScreen extends Composite {
     interface ChangeTimeScreenUiBinder extends UiBinder<Widget, ChangeTimeScreen> {
     }

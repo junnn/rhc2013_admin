@@ -34,6 +34,7 @@ import java.util.List;
  * Time: 10:13 AM
  * To change this template use File | Settings | File Templates.
  */
+
 public class DeletedFlagUser extends Composite{
     interface DeletedFlagUserUiBinder extends UiBinder<Widget, DeletedFlagUser> {
     }

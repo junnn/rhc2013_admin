@@ -12,13 +12,7 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Jun
- * Date: 3/9/13
- * Time: 9:45 AM
- * To change this template use File | Settings | File Templates.
- */
+
 public class Header extends Composite{
     interface HeaderUiBinder extends UiBinder<Widget, Header> {
     }
