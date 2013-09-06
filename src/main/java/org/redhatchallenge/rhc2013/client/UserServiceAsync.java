@@ -1,19 +1,20 @@
 package org.redhatchallenge.rhc2013.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.redhatchallenge.rhc2013.shared.RegStatus;
 import org.redhatchallenge.rhc2013.shared.Student;
 import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
+
 public interface UserServiceAsync {
     void getListOfStudents(AsyncCallback<List<Student>> async);
 
     void getListOfTimeSlot(AsyncCallback<List<TimeSlotList>> async);
+
+    void getRegStatus(AsyncCallback<List<RegStatus>> async);
 
     void updateStudentData(Student student, AsyncCallback<Boolean> async);
 
@@ -26,6 +27,8 @@ public interface UserServiceAsync {
                          String lecturerEmail, String language, Boolean verified, AsyncCallback<Boolean> async);
 
     void exportCsv(List<Student> students, AsyncCallback<String> async);
+
+    void updateRegistraionStatus(RegStatus status, AsyncCallback<Boolean> async);
 
     void resetPassword(String password, List<Student> students, AsyncCallback<Boolean> async);
 

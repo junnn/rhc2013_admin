@@ -10,13 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: gerald
- * Date: 9/4/13
- * Time: 5:58 PM
- * To change this template use File | Settings | File Templates.
- */
 public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailService {
 
     @Override
@@ -52,11 +45,8 @@ public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailS
             } catch(IOException e) {
                 e.printStackTrace();
             }
-
             EmailUtil.sendEmail(subject, html, "Thank You", s.getEmail());
         }
         return true;
     }
-
-
 }

@@ -5,13 +5,6 @@ import org.apache.commons.mail.EmailConstants;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Jun
- * Date: 30/8/13
- * Time: 10:23 AM
- * To change this template use File | Settings | File Templates.
- */
 public class EmailUtil {
     private static HtmlEmail mail;
 

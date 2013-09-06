@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
+
 public class DownloadCsv extends HttpServlet {
 
     private static final int BYTES_DOWNLOAD = 3000;

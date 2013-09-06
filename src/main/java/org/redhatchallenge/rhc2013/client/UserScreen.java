@@ -29,6 +29,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
+import org.redhatchallenge.rhc2013.shared.RegStatus;
 import org.redhatchallenge.rhc2013.shared.Student;
 import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
@@ -39,9 +40,7 @@ import java.util.List;
 
 import static com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
+
 public class UserScreen extends Composite {
     interface UserScreenUiBinder extends UiBinder<Widget, UserScreen> {
     }
@@ -61,6 +60,7 @@ public class UserScreen extends Composite {
     @UiField ListBox timeSlotList;
     @UiField Button assignTimeSlotButton;
     @UiField Label errorLabel;
+    @UiField Button regStatusButton;
 
 
     private UserServiceAsync userService = UserService.Util.getInstance();
@@ -69,6 +69,7 @@ public class UserScreen extends Composite {
     private ListDataProvider<Student> provider;
     private List<Student> listOfSelectedStudents = new ArrayList<Student>();
     private List<TimeSlotList> ListofTimeSlot;
+    private RegStatus regStatus;
     private List<String> dateList = new ArrayList<String>();
     private static final ProvidesKey<Student> KEY_PROVIDER = new ProvidesKey<Student>() {
         @Override
@@ -102,6 +103,32 @@ public class UserScreen extends Composite {
 
         });
 
+        userService.getRegStatus(new AsyncCallback<List<RegStatus>>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(List<RegStatus> regStatuses) {
+                for(RegStatus r : regStatuses){
+                    if(r.getStatus_id() == 1){
+                        regStatus = r;
+                    }
+                }
+
+            }
+        });
+
+        regStatusButton.setText("Default");
+
+
+//        if(regStatus.getReg_status_bool() == false){
+//            regStatusButton.setText("Registration is Live");
+//        }
+//        else{
+//            regStatusButton.setText("Registration have Close");
+//        }
 
         userService.getListOfTimeSlot(new AsyncCallback<List<TimeSlotList>>() {
             @Override
@@ -117,7 +144,7 @@ public class UserScreen extends Composite {
                     String formatedDate = returnLongDateTime(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT).format(date));
                     dateList.add(formatedDate);
                 }
-                timeSlotList.insertItem("Select All", 0);
+                timeSlotList.insertItem("Please select a time slot", 0);
                 for(int i = 0; i < dateList.size(); i++){
                     timeSlotList.insertItem(dateList.get(i).toString(),i+1);
                 }
@@ -970,7 +997,7 @@ public class UserScreen extends Composite {
     @UiHandler("assignTimeSlotButton")
     public void handleAssignTimeSlotButtonClick(ClickEvent event) {
         final String timeSlot;
-        if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please Select a Time Slot")){
+        if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please select a time slot")){
             timeSlot = timeSlotList.getItemText(timeSlotList.getSelectedIndex());
             userService.assignTimeSlot(listOfSelectedStudents, timeSlot, new AsyncCallback<Boolean>() {
                 @Override
@@ -999,6 +1026,49 @@ public class UserScreen extends Composite {
 
 
 
+
+    }
+
+    @UiHandler("regStatusButton")
+    public void handleRegStatusClick(ClickEvent event) {
+        errorLabel.setText("Clicked");
+        Boolean status = regStatus.getReg_status_bool();
+        if(status.equals(Boolean.FALSE)){
+            regStatus.setReg_status_bool(Boolean.TRUE);
+            userService.updateRegistraionStatus(regStatus, new AsyncCallback<Boolean>() {
+                @Override
+                public void onFailure(Throwable throwable) {
+                    throwable.printStackTrace();
+                    verifiedLabel.setText("Fail");
+
+                }
+
+                @Override
+                public void onSuccess(Boolean aBoolean) {
+                    regStatusButton.setText("Registration have Close");
+                    verifiedLabel.setText("Success");
+                }
+            });
+
+        }
+        else{
+            regStatus.setReg_status_bool(Boolean.FALSE);
+
+
+            userService.updateRegistraionStatus(regStatus, new AsyncCallback<Boolean>() {
+                @Override
+                public void onFailure(Throwable throwable) {
+                    throwable.printStackTrace();
+
+                }
+
+                @Override
+                public void onSuccess(Boolean aBoolean) {
+                    regStatusButton.setText("Registration is Live");
+                }
+            });
+
+        }
 
     }
 

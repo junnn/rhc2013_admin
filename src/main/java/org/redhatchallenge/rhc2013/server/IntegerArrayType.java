@@ -12,9 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
 public class IntegerArrayType implements UserType {
     protected static final int  SQLTYPE = java.sql.Types.ARRAY;
 
