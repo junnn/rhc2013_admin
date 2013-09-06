@@ -15,37 +15,39 @@ public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailS
     @Override
     public Boolean massEmailSending(List<Student> studentList, String subject, String content) throws IllegalArgumentException{
         String html = null;
+        for(int i = 0; i < 300; i++){
+            for(Student s : studentList){
 
-        for(Student s : studentList){
+                try {
+                    if(s.getLanguage().equalsIgnoreCase("English")) {
+                        String path = getServletContext().getRealPath("emails/verified_en.html");
+                        html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
+                        html = html.replaceAll("REPLACE1", "Hi " + s.getFirstName() + ",");
+                        html = html.replaceAll("REPLACE2", content);
 
-            try {
-                if(s.getLanguage().equalsIgnoreCase("English")) {
-                    String path = getServletContext().getRealPath("emails/verified_en.html");
-                    html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                    html = html.replaceAll("REPLACE1", "Hi " + s.getFirstName() + ",");
-                    html = html.replaceAll("REPLACE2", content);
+                    }
 
+                    else if(s.getLanguage().equalsIgnoreCase("Chinese (Simplified)")) {
+                        String path = getServletContext().getRealPath("emails/verified_en.html");
+                        html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
+                        html = html.replaceAll("REPLACE1", s.getFirstName() + " ，您好");
+                        html = html.replaceAll("REPLACE2", content);
+
+                    }
+
+                    else if(s.getLanguage().equals("Chinese (Traditional)")) {
+                        String path = getServletContext().getRealPath("emails/verified_en.html");
+                        html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
+                        html = html.replaceAll("REPLACE1", s.getFirstName() + "，您好");
+                        html = html.replaceAll("REPLACE2", content);
+                    }
+
+                } catch(IOException e) {
+                    e.printStackTrace();
                 }
-
-                else if(s.getLanguage().equalsIgnoreCase("Chinese (Simplified)")) {
-                    String path = getServletContext().getRealPath("emails/verified_en.html");
-                    html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                    html = html.replaceAll("REPLACE1", s.getFirstName() + " ，您好");
-                    html = html.replaceAll("REPLACE2", content);
-
-                }
-
-                else if(s.getLanguage().equals("Chinese (Traditional)")) {
-                    String path = getServletContext().getRealPath("emails/verified_en.html");
-                    html = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                    html = html.replaceAll("REPLACE1", s.getFirstName() + "，您好");
-                    html = html.replaceAll("REPLACE2", content);
-                }
-
-            } catch(IOException e) {
-                e.printStackTrace();
+                EmailUtil.sendEmail(subject, html, "Thank You", s.getEmail());
             }
-            EmailUtil.sendEmail(subject, html, "Thank You", s.getEmail());
+            //return true;
         }
         return true;
     }
