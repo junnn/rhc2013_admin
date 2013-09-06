@@ -15,7 +15,7 @@ import org.apache.commons.mail.HtmlEmail;
 public class EmailUtil {
     private static HtmlEmail mail;
 
-    public static void sendEmail(String subject, String htmlMessage, String textMessage, String recipient) {
+    public static void sendEmail(String subject, String htmlMessage, String textMessage, final String recipient) {
 
         mail = new HtmlEmail();
 

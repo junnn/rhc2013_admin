@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -50,7 +51,6 @@ public class UserScreen extends Composite {
     @UiField TextBox searchField;
     @UiField ListBox searchTerms;
     @UiField Button searchButton;
-    @UiField Button registerButton;
     @UiField Button deleteButton;
     @UiField Button exportButton;
     @UiField Button refreshButton;
@@ -59,8 +59,7 @@ public class UserScreen extends Composite {
     @UiField Label registrationLabel;
     @UiField Label verifiedLabel;
     @UiField ListBox timeSlotList;
-    @UiField Button timeSlotButton;
-    @UiField Button TimeSlotMngButton;
+    @UiField Button assignTimeSlotButton;
     @UiField Label errorLabel;
 
 
@@ -90,7 +89,7 @@ public class UserScreen extends Composite {
 
             @Override
             public void onSuccess(List<Student> result) {
-
+                origStudentList = new ArrayList<Student>(result);
                 studentList = result;
 
                 setUserCount();
@@ -153,7 +152,6 @@ public class UserScreen extends Composite {
             public void update(int index, Student student, Boolean value) {
                 if(value) {
                     listOfSelectedStudents.add(student);
-
                 }
 
                 else {
@@ -219,24 +217,35 @@ public class UserScreen extends Composite {
         emailColumn.setFieldUpdater(new FieldUpdater<Student, String>() {
             @Override
             public void update(int index, Student object, String value) {
-                object.setEmail(value);
-                userService.updateStudentData(object, new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        caught.printStackTrace();
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if(!result) {
-                            displayErrorBox("Failed", "Update has failed");
+                if(value.equals(object.getEmail())){
+                }
+                else if(checkEmail(value) < 1) {
+                    object.setEmail(value);
+                    userService.updateStudentData(object, new AsyncCallback<Boolean>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            caught.printStackTrace();
                         }
 
-                        else {
-                            cellTable.redraw();
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            if(!result) {
+                                displayErrorBox("Failed", "Update has failed");
+                            }
+
+                            else {
+                                cellTable.redraw();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                else{
+                    Window.alert("Email Address Already Exist in the Database!");
+                    ContentContainer.INSTANCE.setContent(new UserScreen());
+
+                }
+
+
             }
         });
 
@@ -450,22 +459,33 @@ public class UserScreen extends Composite {
         contactColumn.setFieldUpdater(new FieldUpdater<Student, String>() {
             @Override
             public void update(int index, Student object, String value) {
-                object.setContact(value);
-                userService.updateStudentData(object, new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        caught.printStackTrace();
-                    }
+                if(value.equals(object.getContact())){
+                }
 
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if (!result) {
-                            displayErrorBox("Failed", "Update has failed");
-                        } else {
-                            cellTable.redraw();
+                else if(checkContact(value) < 1){
+                    object.setContact(value);
+                    userService.updateStudentData(object, new AsyncCallback<Boolean>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            caught.printStackTrace();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            if (!result) {
+                                displayErrorBox("Failed", "Update has failed");
+                            } else {
+                                cellTable.redraw();
+                            }
+                        }
+                    });
+                }
+                else{
+                    Window.alert("Contact Already Exist in the Database!");
+                    ContentContainer.INSTANCE.setContent(new UserScreen());
+                }
+
+
             }
         });
 
@@ -561,7 +581,6 @@ public class UserScreen extends Composite {
                 return -1;
             }
         });
-
 
         lecturerFirstNameColumn.setFieldUpdater(new FieldUpdater<Student, String>() {
             @Override
@@ -681,7 +700,7 @@ public class UserScreen extends Composite {
         ArrayList<String> languageList = new ArrayList<String>();
             languageList.add("English");
             languageList.add("Chinese (Simplified)");
-            languageList.add("Chinese (Tranditional)");
+            languageList.add("Chinese (Traditional)");
 
         Column<Student, String> languageColumn = new Column<Student, String>(new SelectionCell(languageList)) {
             @Override
@@ -771,34 +790,17 @@ public class UserScreen extends Composite {
             }
         });
 
-        Column<Student, Boolean> statusColumn = new Column<Student, Boolean>(new CheckboxCell(true, false)) {
+        verifiedColumn.setSortable(true);
+        sortHandler.setComparator(verifiedColumn, new Comparator<Student>() {
             @Override
-            public Boolean getValue(Student student) {
-                return student.getStatus();
-            }
-        };
-
-        statusColumn.setFieldUpdater(new FieldUpdater<Student, Boolean>() {
-            @Override
-            public void update(int index, Student object, Boolean value) {
-                object.setStatus(value);
-                userService.updateStudentData(object, new AsyncCallback<Boolean>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        caught.printStackTrace();
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if(!result) {
-                            displayErrorBox("Failed", "Update has failed");
-                        }
-
-                        else {
-                            cellTable.redraw();
-                        }
-                    }
-                });
+            public int compare(Student o1, Student o2) {
+                if (o1 == o2) {
+                    return 0;
+                }
+                if (o1 != null) {
+                    return (o2 != null) ? o1.getVerified().compareTo(o2.getVerified()) : 1;
+                }
+                return -1;
             }
         });
 
@@ -816,7 +818,6 @@ public class UserScreen extends Composite {
         cellTable.addColumn(lecturerEmailColumn, "Lecturer's Email");
         cellTable.addColumn(languageColumn, "Language");
         cellTable.addColumn(verifiedColumn, "Verified");
-        cellTable.addColumn(statusColumn, "Status");
 
         cellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Student> createCheckboxManager(cellTable.getColumnIndex(selectColumn)));
     }
@@ -854,40 +855,45 @@ public class UserScreen extends Composite {
     @UiHandler("searchButton")
     public void handleSearchButtonClick(ClickEvent event) {
         String contains = searchField.getText();
+
         List<Student> list = new ArrayList<Student>();
 
         if(contains.equals("")) {
-            provider.setList(studentList);
+            for (Student s : origStudentList){
+                list.add(s);
+            }
+            provider.getList().clear();
+            provider.getList().addAll(list);
         }
 
         else {
             String category = searchTerms.getItemText(searchTerms.getSelectedIndex());
             if(category.equalsIgnoreCase("Email")) {
-                for(Student s : studentList) {
-                    if(s.getEmail().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getEmail().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
             }
 
             else if(category.equalsIgnoreCase("First Name")) {
-                for(Student s : studentList) {
-                    if(s.getFirstName().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getFirstName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
             }
 
             else if(category.equalsIgnoreCase("Last Name")) {
-                for(Student s : studentList) {
-                    if(s.getLastName().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getLastName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
             }
 
             else if(category.equalsIgnoreCase("Contact")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getContact().contains(contains)) {
                         list.add(s);
                     }
@@ -895,15 +901,15 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("Country")) {
-                for(Student s : studentList) {
-                    if(s.getCountry().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getCountry().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
             }
 
             else if(category.equalsIgnoreCase("Country Code")) {
-                for(Student s : studentList) {
+                for(Student s : origStudentList) {
                     if(s.getCountryCode().contains(contains)) {
                         list.add(s);
                     }
@@ -911,42 +917,48 @@ public class UserScreen extends Composite {
             }
 
             else if(category.equalsIgnoreCase("School")) {
-                for(Student s : studentList) {
-                    if(s.getFirstName().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getFirstName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
             }
 
             else if(category.equalsIgnoreCase("Lecturer's First Name")) {
-                for(Student s : studentList) {
-                    if(s.getLecturerFirstName().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getLecturerFirstName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
             }
 
             else if(category.equalsIgnoreCase("Lecturer's Last Name")) {
-                for(Student s : studentList) {
-                    if(s.getLecturerLastName().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getLecturerLastName().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
             }
 
             else if(category.equalsIgnoreCase("Lecturer's Email")) {
-                for(Student s : studentList) {
-                    if(s.getLecturerEmail().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getLecturerEmail().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
                 }
             }
 
             else if(category.equalsIgnoreCase("Language")) {
-                for(Student s : studentList) {
-                    if(s.getLanguage().contains(contains)) {
+                for(Student s : origStudentList) {
+                    if(s.getLanguage().toLowerCase().contains(contains.toLowerCase())) {
                         list.add(s);
                     }
+                }
+            }
+
+            else {
+                for (Student s : origStudentList){
+                    list.add(s);
                 }
             }
 
@@ -955,8 +967,8 @@ public class UserScreen extends Composite {
         }
     }
 
-    @UiHandler("timeSlotButton")
-    public void handleTimeSlotButtonClick(ClickEvent event) {
+    @UiHandler("assignTimeSlotButton")
+    public void handleAssignTimeSlotButtonClick(ClickEvent event) {
         final String timeSlot;
         if(!timeSlotList.getItemText(timeSlotList.getSelectedIndex()).equals("Please Select a Time Slot")){
             timeSlot = timeSlotList.getItemText(timeSlotList.getSelectedIndex());
@@ -992,43 +1004,41 @@ public class UserScreen extends Composite {
 
     @UiHandler("deleteButton")
     public void handleDeleteButtonClick(ClickEvent event) {
-        userService.deleteStudents(listOfSelectedStudents, new AsyncCallback<Boolean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                caught.printStackTrace();
-            }
+       Boolean delete =  Window.confirm("Are you sure you want to delete");
+        if (delete.equals(true)){
 
-            @Override
-            public void onSuccess(Boolean result) {
-                if(!result) {
-                    displayErrorBox("Error", "Error with deleting users");
+            userService.deleteStudents(listOfSelectedStudents, new AsyncCallback<Boolean>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    caught.printStackTrace();
                 }
 
-                else {
-                    List<Student> toBeRemoved = new ArrayList<Student>();
-                    for(Student s : studentList) {
-                        if(listOfSelectedStudents.contains(s)) {
-                            toBeRemoved.add(s);
-                        }
+                @Override
+                public void onSuccess(Boolean result) {
+                    if(!result) {
+                        displayErrorBox("Error", "Error with deleting users");
                     }
-                    studentList.removeAll(toBeRemoved);
-                    provider.setList(studentList);
-                    listOfSelectedStudents.clear(); //remove list of selected & deleted users
-                    setUserCount();
+
+                    else {
+                        List<Student> toBeRemoved = new ArrayList<Student>();
+                        for(Student s : studentList) {
+                            if(listOfSelectedStudents.contains(s)) {
+                                toBeRemoved.add(s);
+                            }
+                        }
+                        studentList.removeAll(toBeRemoved);
+                        provider.setList(studentList);
+                        listOfSelectedStudents.clear(); //remove list of selected & deleted users
+                        setUserCount();
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            Window.alert("User not Deleted.");
+        }
 
-    }
 
-    @UiHandler("registerButton")
-    public void handleRegisterButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new RegisterScreen());
-    }
-
-    @UiHandler("TimeSlotMngButton")
-    public void handleTimeSlotMngButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new TimeslotScreen());
     }
 
     @UiHandler("exportButton")
@@ -1164,4 +1174,28 @@ public class UserScreen extends Composite {
         Date date = new Date(unixTime);
         return date;
     }
+
+    private int checkEmail(String email){
+        int counter = 0;
+        for(Student s : studentList){
+            if(email.equals(s.getEmail())){
+                counter++;
+                break;
+            }
+        }
+        return counter;
+    }
+
+    private int checkContact(String contact){
+        int counter = 0;
+        for(Student s : studentList){
+            if(contact.equals(s.getContact())){
+                counter++;
+                break;
+            }
+        }
+        return counter;
+    }
+
+
 }
