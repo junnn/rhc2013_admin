@@ -12,13 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Jun
- * Date: 4/9/13
- * Time: 4:48 PM
- * To change this template use File | Settings | File Templates.
- */
 public class SendPasswordResetEmail implements Runnable{
     private final ServletContext servletContext;
     private final String email;

@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.redhatchallenge.rhc2013.client.UserService;
 import org.redhatchallenge.rhc2013.shared.ConfirmationTokens;
+import org.redhatchallenge.rhc2013.shared.RegStatus;
 import org.redhatchallenge.rhc2013.shared.Student;
 import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
@@ -27,9 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
+
 public class UserServiceImpl extends RemoteServiceServlet implements UserService {
 
     @Override
@@ -64,6 +63,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
         }
     }
 
+
     @Override
     public List<TimeSlotList> getListOfTimeSlot() throws IllegalArgumentException {
 
@@ -80,6 +80,43 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
             return null;
         }
     }
+
+    @Override
+    public List<RegStatus> getRegStatus() throws IllegalArgumentException {
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            //noinspection unchecked
+            List<RegStatus> regStatus = session.createCriteria(RegStatus.class).list();
+            session.close();
+
+            return regStatus;
+        } catch (HibernateException e) {
+            session.close();
+            return null;
+        }
+    }
+
+
+    @Override
+    public Boolean updateRegistraionStatus(RegStatus status) throws IllegalArgumentException {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+        try {
+            session.beginTransaction();
+            session.update(status);
+            session.getTransaction().commit();
+            return true;
+        }
+
+        catch (HibernateException e) {
+            session.close();
+            return false;
+
+        }
+    }
+
 
     @Override
     public Boolean updateStudentData(Student student) throws IllegalArgumentException {

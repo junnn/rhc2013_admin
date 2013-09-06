@@ -13,9 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
+
 @RemoteServiceRelativePath("MassEmailService")
 public interface MassEmailService extends RemoteService {
     public Boolean massEmailSending(List<Student> studentList, String subject, String content) throws IllegalArgumentException;

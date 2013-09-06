@@ -24,9 +24,17 @@ CREATE TABLE contestant (
     last_modified timestamp
 );
 
+CREATE TABLE  registration_status (
+  status_id primary key,
+  reg_status_bool boolean DEFAULT FALSE NOT NULL
+);
+
+INSERT INTO registration_status(status_id, reg_status_bool) VALUES (1, FALSE);
+
+
 CREATE TABLE timeslot_list (
     timeslot_id serial primary key,
-    timeslot bigint  NOT NULL UNIQUE,
+    timeslot bigint  NOT NULL UNIQUE
 );
 
 INSERT INTO timeslot_list(timeslot, timeslot_id) VALUES (1382490000000, 1);

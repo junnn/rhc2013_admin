@@ -38,6 +38,7 @@
                 <g:ListBox ui:field="timeSlotList" visibleItemCount="1"/>
 
                 <g:Button ui:field="assignTimeSlotButton" text="Assign"/>
+                <g:Button ui:field="regStatusButton"/>
             </td>
         </tr>
             <tr>

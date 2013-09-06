@@ -2,9 +2,7 @@ package org.redhatchallenge.rhc2013.server;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-/**
- * @author: Terry Chia (terrycwk1994@gmail.com)
- */
+
 public class SecurityUtil {
 
     /**

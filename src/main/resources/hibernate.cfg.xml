@@ -30,5 +30,6 @@
         <mapping resource="ConfirmationTokens.hbm.xml" />
         <mapping resource="ResetPasswordTokens.hbm.xml"/>
         <mapping resource="TimeSlotList.hbm.xml"/>
+        <mapping resource="Reg_Status.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
