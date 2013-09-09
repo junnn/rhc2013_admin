@@ -15,7 +15,6 @@ public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailS
     @Override
     public Boolean massEmailSending(List<Student> studentList, String subject, String content) throws IllegalArgumentException{
         String html = null;
-        for(int i = 0; i < 300; i++){
             for(Student s : studentList){
 
                 try {
@@ -47,8 +46,6 @@ public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailS
                 }
                 EmailUtil.sendEmail(subject, html, "Thank You", s.getEmail());
             }
-            //return true;
-        }
         return true;
     }
 }
