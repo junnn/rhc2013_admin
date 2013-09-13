@@ -34,7 +34,6 @@ import org.redhatchallenge.rhc2013.shared.RegStatus;
 import org.redhatchallenge.rhc2013.shared.Student;
 import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
-import javax.swing.plaf.metal.MetalBorders;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -125,10 +124,17 @@ public class UserScreen extends Composite {
                     }
                 }
 
+                Boolean status = regStatus.getReg_status_bool();
+                if(status.equals(Boolean.FALSE)){
+                    regStatusButton.setText("Registration is Live");
+                }
+                else{
+                    regStatusButton.setText("Registraion is Close");
+                }
+
+
             }
         });
-
-
 
         userService.getListOfTimeSlot(new AsyncCallback<List<TimeSlotList>>() {
             @Override
@@ -1038,7 +1044,6 @@ public class UserScreen extends Composite {
                 @Override
                 public void onFailure(Throwable throwable) {
                     throwable.printStackTrace();
-                    verifiedLabel.setText("Fail");
 
                 }
 

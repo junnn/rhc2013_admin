@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailService {
@@ -15,8 +16,8 @@ public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailS
     @Override
     public Boolean massEmailSending(List<Student> studentList, String subject, String content) throws IllegalArgumentException{
         String html = null;
+        int counter = 0;
             for(Student s : studentList){
-
                 try {
                     if(s.getLanguage().equalsIgnoreCase("English")) {
                         String path = getServletContext().getRealPath("emails/verified_en.html");
@@ -41,11 +42,25 @@ public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailS
                         html = html.replaceAll("REPLACE2", content);
                     }
 
-                } catch(IOException e) {
+                    EmailUtil.sendEmail(subject, html, "Thank You", s.getEmail());
+                    counter++;
+
+                }
+                catch(IOException e) {
                     e.printStackTrace();
                 }
-                EmailUtil.sendEmail(subject, html, "Thank You", s.getEmail());
+//                EmailUtil.sendEmail(subject, html, "Thank You", s.getEmail());
+//                counter++;
             }
-        return true;
+
+        int size = studentList.size();
+        if(counter == size){
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 }

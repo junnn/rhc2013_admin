@@ -185,13 +185,13 @@ public class RegisterScreen extends Composite {
         }
 
         if(successCounter == 7){
-            registerButton.setEnabled(false);
             registerStudent();
-            registerButton.setEnabled(true);
         }
     }
 
     private void registerStudent() {
+
+        registerButton.setEnabled(false);
 
         final String email = emailField.getText();
         final String password = passwordField.getText();
@@ -243,10 +243,12 @@ public class RegisterScreen extends Composite {
                     lecturerEmailField.setText("");
                     lecturerFirstNameField.setText("");
                     lecturerLastNameField.setText("");
+                    registerButton.setEnabled(true);
                 }
 
                 else {
                     messageLabel.setText("Someone has already used this email/contact. Try another?");
+                    registerButton.setEnabled(true);
                 }
             }
         });
