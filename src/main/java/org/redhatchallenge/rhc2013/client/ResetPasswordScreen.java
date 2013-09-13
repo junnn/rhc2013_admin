@@ -86,7 +86,7 @@ public class ResetPasswordScreen extends Composite {
         });
 
         pager.setDisplay(cellTable);
-        pager.setPageSize(10);
+        pager.setPageSize(100);
 
     }
 

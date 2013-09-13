@@ -98,7 +98,7 @@ public class ChangeTimeScreen extends Composite {
             }
         });
         pager.setDisplay(readOnlyCellTable);
-        pager.setPageSize(8);
+        pager.setPageSize(100);
     }
 
     private void initReadOnlyCellTable(){

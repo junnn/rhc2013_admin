@@ -7,10 +7,13 @@
 
     <g:HTMLPanel>
         <center>
-            <p><font size="6"><b>Contestant Deleted</b></font></p>
-            <g:Button ui:field="restoreButton" text="Restore User"/>
+            <p><font size="6"><b>Contestant Result</b></font></p>
+            <g:TextBox ui:field="searchField" text="Enter name of contestant"/>
+            <g:Button ui:field="searchButton" text="Search"/>
+            <g:Button ui:field="refreshButton" text="Refresh"/>
+            <g:Button ui:field="exportButton" text="Export"/>
             <g:Label ui:field="resultLabel"/>
-            <c:CellTable ui:field="deletedUserCellTable"/>
+            <c:CellTable ui:field="resultCellTable"/>
             <z:MySimplePager location="CENTER" fastForwardRows="0" showFastForwardButton="false" showLastPageButton="true"  ui:field="pager"/>
         </center>
     </g:HTMLPanel>

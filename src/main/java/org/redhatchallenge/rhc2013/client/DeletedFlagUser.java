@@ -85,7 +85,7 @@ public class DeletedFlagUser extends Composite{
             }
         });
         pager.setDisplay(deletedUserCellTable);
-        pager.setPageSize(8);
+        pager.setPageSize(100);
         resultLabel.setVisible(false);
     }
 

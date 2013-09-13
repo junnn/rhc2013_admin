@@ -27,6 +27,7 @@ public class Header extends Composite{
     @UiField MenuItem menuItem5;
     @UiField MenuItem menuItem6;
     @UiField MenuItem menuItem7;
+    @UiField MenuItem menuItem8;
 
     public Header(){
         initWidget(UiBinder.createAndBindUi(this));
@@ -80,6 +81,13 @@ public class Header extends Composite{
             @Override
             public void execute() {
                 ContentContainer.INSTANCE.setContent(new DeletedFlagUser());
+            }
+        });
+
+        menuItem8.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                ContentContainer.INSTANCE.setContent(new ResultScreen());
             }
         });
 

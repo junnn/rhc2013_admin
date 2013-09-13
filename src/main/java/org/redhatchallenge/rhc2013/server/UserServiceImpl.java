@@ -417,7 +417,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
      */
     private String[] studentToStringArray(Student student) {
 
-        String[] strings = new String[14];
+        String[] strings = new String[17];
         strings[0] = student.getEmail();
         strings[1] = student.getPassword();
         strings[2] = student.getFirstName();
@@ -432,6 +432,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
         strings[11] = student.getLanguage();
         strings[12] = student.getVerified().toString();
         strings[13] = student.getStatus().toString();
+        strings[14] = String.valueOf(student.getScore());
+        strings[15] = String.valueOf(student.getStartTime());
+        strings[16] = String.valueOf(student.getEndTime());
 
         return strings;
     }

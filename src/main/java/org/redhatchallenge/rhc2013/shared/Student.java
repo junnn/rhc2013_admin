@@ -1,6 +1,7 @@
 package org.redhatchallenge.rhc2013.shared;
-
+import javax.persistence.Entity;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * @author: Terry Chia (terrycwk1994@gmail.com)
@@ -24,6 +25,9 @@ public class Student implements Serializable {
     private Boolean status = true;
     private int[] questions = {};
     private long timeslot = 0;
+    private int score = 0;
+    private Timestamp startTime;
+    private Timestamp endTime;
 
     public int getContestantId() {
         return contestantId;
@@ -159,5 +163,29 @@ public class Student implements Serializable {
 
     public void setTimeslot(long timeslot) {
         this.timeslot = timeslot;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
 }

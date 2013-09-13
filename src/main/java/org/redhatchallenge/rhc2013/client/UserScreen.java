@@ -153,7 +153,7 @@ public class UserScreen extends Composite {
 
 
         pager.setDisplay(cellTable);
-        pager.setPageSize(8);
+        pager.setPageSize(100);
     }
 
     private void initCellTable() {

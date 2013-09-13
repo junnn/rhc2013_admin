@@ -47,7 +47,6 @@ public class TimeslotScreen extends Composite {
 
     @UiField ListBox countryField;
     @UiField ListBox regionField;
-    //    @UiField ListBox timeslotField;
     @UiField Label noTimeslotLabel;
     @UiField CellTable<Student> timeslotCellTable;
     @UiField MySimplePager pager;
@@ -120,7 +119,7 @@ public class TimeslotScreen extends Composite {
         });
 
         pager.setDisplay(timeslotCellTable);
-        pager.setPageSize(8);
+        pager.setPageSize(100);
         timeSlotList.addItem("Please Select a Time Slot");
         errorLabel.setVisible(false);
         errorLabel.setText("No Time Slot Selected! Please try again!");
@@ -297,12 +296,6 @@ public class TimeslotScreen extends Composite {
         timeslotCellTable.addColumn(countryColumn, "Region");
         timeslotCellTable.addColumn(timeSlotColumn, "Time Slot");
         timeslotCellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Student> createCheckboxManager(timeslotCellTable.getColumnIndex(selectColumn)));
-
-        timeslotCellTable.setWidth("45%", true);
-        timeslotCellTable.setColumnWidth(selectColumn, 6.0, Style.Unit.PX);
-        timeslotCellTable.setColumnWidth(emailColumn, 15.0, Style.Unit.PX);
-        timeslotCellTable.setColumnWidth(countryColumn, 12.0, Style.Unit.PX);
-        timeslotCellTable.setColumnWidth(timeSlotColumn, 12.0, Style.Unit.PX);
     }
 
 
