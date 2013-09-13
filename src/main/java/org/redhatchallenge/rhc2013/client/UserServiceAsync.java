@@ -12,6 +12,8 @@ import java.util.List;
 public interface UserServiceAsync {
     void getListOfStudents(AsyncCallback<List<Student>> async);
 
+    void getListOfDeletedStudents(AsyncCallback<List<Student>> async);
+
     void getListOfTimeSlot(AsyncCallback<List<TimeSlotList>> async);
 
     void getRegStatus(AsyncCallback<List<RegStatus>> async);

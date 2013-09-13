@@ -26,7 +26,7 @@ public class Header extends Composite{
     @UiField MenuItem menuItem4;
     @UiField MenuItem menuItem5;
     @UiField MenuItem menuItem6;
-//    @UiField MenuBar menuBarHome;
+    @UiField MenuItem menuItem7;
 
     public Header(){
         initWidget(UiBinder.createAndBindUi(this));
@@ -75,5 +75,13 @@ public class Header extends Composite{
                 ContentContainer.INSTANCE.setContent(new MassEmailScreen());
             }
         });
+
+        menuItem7.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                ContentContainer.INSTANCE.setContent(new DeletedFlagUser());
+            }
+        });
+
     }
 }

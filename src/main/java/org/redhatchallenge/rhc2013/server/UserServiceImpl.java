@@ -38,7 +38,23 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
         try {
             session.beginTransaction();
             //noinspection unchecked
-            List<Student> studentList = session.createCriteria(Student.class).list();
+            List<Student> studentList = session.createCriteria(Student.class).add(Restrictions.eq("status", Boolean.TRUE)).list();
+            session.close();
+            return studentList;
+        } catch (HibernateException e) {
+            session.close();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Student> getListOfDeletedStudents() throws IllegalArgumentException {
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            //noinspection unchecked
+            List<Student> studentList = session.createCriteria(Student.class).add(Restrictions.eq("status", Boolean.FALSE)).list();
             session.close();
             return studentList;
         } catch (HibernateException e) {
@@ -126,7 +142,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
         session.beginTransaction();
         try {
             for(Student s : students) {
-                session.delete(s);
+                s.setStatus(Boolean.FALSE);
+                session.update(s);
             }
 
             session.getTransaction().commit();

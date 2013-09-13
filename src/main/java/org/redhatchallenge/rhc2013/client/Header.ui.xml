@@ -8,6 +8,7 @@
                     <g:MenuItem ui:field="menuItem1" text="View Contestant">
                         <g:MenuBar vertical="true">
                             <g:MenuItem ui:field="menuItem4" text="View Contestant per TimeSlot"></g:MenuItem>
+                            <g:MenuItem ui:field="menuItem7" text="List of Deleted User"></g:MenuItem>
                         </g:MenuBar>
                     </g:MenuItem>
                     <g:MenuItem ui:field="menuItem2" text="Add Contestant"></g:MenuItem>

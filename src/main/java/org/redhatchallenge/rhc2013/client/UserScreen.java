@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -114,6 +115,12 @@ public class UserScreen extends Composite {
                 for(RegStatus r : regStatuses){
                     if(r.getStatus_id() == 1){
                         regStatus = r;
+                        if(regStatus.getReg_status_bool() == false){
+                            regStatusButton.setText("Registration is Live");
+                        }
+                        else{
+                            regStatusButton.setText("Registration have Close");
+                        }
                     }
                 }
 
@@ -129,17 +136,6 @@ public class UserScreen extends Composite {
             }
         });
 
-
-
-
-
-//        if(regStatus.getReg_status_bool() == false){
-//            regStatusButton.setText("Registration is Live");
-//        }
-//        else{
-//            regStatusButton.setText("Registration have Close");
-//        }
-
         userService.getListOfTimeSlot(new AsyncCallback<List<TimeSlotList>>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -149,14 +145,14 @@ public class UserScreen extends Composite {
             @Override
             public void onSuccess(List<TimeSlotList> timeSlotLists) {
                 ListofTimeSlot = new ArrayList<TimeSlotList>(timeSlotLists);
-                for(TimeSlotList d : ListofTimeSlot){
+                for (TimeSlotList d : ListofTimeSlot) {
                     Date date = convertTimeSlot(d.getTimeslot());
                     String formatedDate = returnLongDateTime(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT).format(date));
                     dateList.add(formatedDate);
                 }
                 timeSlotList.insertItem("Please select a time slot", 0);
-                for(int i = 0; i < dateList.size(); i++){
-                    timeSlotList.insertItem(dateList.get(i).toString(),i+1);
+                for (int i = 0; i < dateList.size(); i++) {
+                    timeSlotList.insertItem(dateList.get(i).toString(), i + 1);
                 }
             }
         });
@@ -1079,43 +1075,33 @@ public class UserScreen extends Composite {
 
     }
 
-    @UiHandler("deleteButton")
-    public void handleDeleteButtonClick(ClickEvent event) {
-       Boolean delete =  Window.confirm("Are you sure you want to delete");
-        if (delete.equals(true)){
+    public void deleteFunction() {
+        userService.deleteStudents(listOfSelectedStudents, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                caught.printStackTrace();
+            }
 
-            userService.deleteStudents(listOfSelectedStudents, new AsyncCallback<Boolean>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    caught.printStackTrace();
+            @Override
+            public void onSuccess(Boolean result) {
+                if(!result) {
+                    displayErrorBox("Error", "Error with deleting users");
                 }
 
-                @Override
-                public void onSuccess(Boolean result) {
-                    if(!result) {
-                        displayErrorBox("Error", "Error with deleting users");
-                    }
-
-                    else {
-                        List<Student> toBeRemoved = new ArrayList<Student>();
-                        for(Student s : studentList) {
-                            if(listOfSelectedStudents.contains(s)) {
-                                toBeRemoved.add(s);
-                            }
+                else {
+                    List<Student> toBeRemoved = new ArrayList<Student>();
+                    for(Student s : studentList) {
+                        if(listOfSelectedStudents.contains(s)) {
+                            toBeRemoved.add(s);
                         }
-                        studentList.removeAll(toBeRemoved);
-                        provider.setList(studentList);
-                        listOfSelectedStudents.clear(); //remove list of selected & deleted users
-                        setUserCount();
                     }
+                    studentList.removeAll(toBeRemoved);
+                    provider.setList(studentList);
+                    listOfSelectedStudents.clear(); //remove list of selected & deleted users
+                    setUserCount();
                 }
-            });
-        }
-        else {
-            Window.alert("User not Deleted.");
-        }
-
-
+            }
+        });
     }
 
     @UiHandler("exportButton")
@@ -1274,5 +1260,41 @@ public class UserScreen extends Composite {
         return counter;
     }
 
+    @UiHandler("deleteButton")
+    public void confirmDelete(ClickEvent event) {
+        final DialogBox confirmBox = new DialogBox();
+        confirmBox.setText("Deleting Users");
+        final HTML messageLabel = new HTML();
+        messageLabel.setHTML("Are you sure you want to delete the contestants?");
+        HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+        final Button cancelButton = new Button("Cancel");
+        final Button okButton  = new Button("Delete");
+
+        cancelButton.setEnabled(true);
+        okButton.setEnabled(true);
+        cancelButton.getElement().setId("cancel");
+        okButton.getElement().setId("delete");
+
+        cancelButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                confirmBox.hide();
+            }
+        });
+        okButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                deleteFunction();
+                confirmBox.hide();
+            }
+        });
+
+        horizontalPanel.add(messageLabel);
+        horizontalPanel.add(cancelButton);
+        horizontalPanel.add(okButton);
+        confirmBox.setWidget(horizontalPanel);
+        confirmBox.center();
+    }
 
 }

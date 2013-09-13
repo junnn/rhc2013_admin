@@ -14,6 +14,7 @@ import java.util.List;
 public interface UserService extends RemoteService {
 
     List<Student> getListOfStudents() throws IllegalArgumentException;
+    List<Student> getListOfDeletedStudents() throws IllegalArgumentException;
     List<TimeSlotList> getListOfTimeSlot() throws IllegalArgumentException;
     Boolean updateStudentData(Student student) throws IllegalArgumentException;
     Boolean deleteStudents(List<Student> students) throws IllegalArgumentException;
