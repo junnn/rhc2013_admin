@@ -44,6 +44,7 @@ public class EmailServiceImpl extends RemoteServiceServlet implements MassEmailS
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
+
                 EmailUtil.sendEmail(subject, html, "Thank You", s.getEmail());
             }
         return true;

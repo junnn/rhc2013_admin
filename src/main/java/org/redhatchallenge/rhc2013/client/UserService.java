@@ -14,16 +14,24 @@ import java.util.List;
 public interface UserService extends RemoteService {
 
     List<Student> getListOfStudents() throws IllegalArgumentException;
+
     List<Student> getListOfDeletedStudents() throws IllegalArgumentException;
+
     List<TimeSlotList> getListOfTimeSlot() throws IllegalArgumentException;
+
     Boolean updateStudentData(Student student) throws IllegalArgumentException;
+
     Boolean deleteStudents(List<Student> students) throws IllegalArgumentException;
+
     Boolean assignTimeSlot(List<Student> students, String timeSlot) throws IllegalArgumentException;
     public Boolean registerStudent(String email, String password, String firstName, String lastName, String contact,
                                  String country, String countryCode, String school, String lecturerFirstName, String lecturerLastName,
                                  String lecturerEmail, String language, Boolean verified) throws IllegalArgumentException;
 
+    Boolean resetTestDetails(Student student) throws IllegalArgumentException;
+
     String exportCsv(List<Student> students) throws IllegalArgumentException;
+
     void assignTimeslotAndQuestions(String email) throws IllegalArgumentException;
 
     public boolean resetPassword(String password, List<Student> students) throws IllegalArgumentException;

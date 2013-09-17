@@ -8,10 +8,15 @@
     <g:HTMLPanel>
         <center>
             <p><font size="6"><b>Contestant Result</b></font></p>
+            <p><g:Label ui:field="currentTakerLabel"/></p>
             <g:TextBox ui:field="searchField" text="Enter name of contestant"/>
             <g:Button ui:field="searchButton" text="Search"/>
             <g:Button ui:field="refreshButton" text="Refresh"/>
             <g:Button ui:field="exportButton" text="Export"/>
+            <g:Button ui:field="resetButton" text="Reset"/>
+            <g:Button ui:field="currentTakerButton" text="Currently taking challenge"/>
+            <g:Label ui:field="filterLabel"/>
+            <g:ListBox ui:field="viewResultList"/>
             <g:Label ui:field="resultLabel"/>
             <c:CellTable ui:field="resultCellTable"/>
             <z:MySimplePager location="CENTER" fastForwardRows="0" showFastForwardButton="false" showLastPageButton="true"  ui:field="pager"/>

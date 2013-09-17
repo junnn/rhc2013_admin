@@ -14,12 +14,7 @@
                 <tr>
                     <td>Language:</td>
                     <td>
-                        <g:ListBox ui:field="emailLanguage" visibleItemCount="1">
-                            <g:item value="1">Please Select</g:item>
-                            <g:item value="2">English</g:item>
-                            <g:item value="3">Chinese (Simplified)</g:item>
-                            <g:item value="4">Chinese (Traditional)</g:item>
-                        </g:ListBox>
+                        <g:ListBox ui:field="timeSlotList" visibleItemCount="1"/>
                     <font color="red"><g:Label ui:field="languageLabel"/></font>
                     </td>
                  </tr>

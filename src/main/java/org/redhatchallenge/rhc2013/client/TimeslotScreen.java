@@ -113,7 +113,6 @@ public class TimeslotScreen extends Composite {
                     Date date = convertTimeSlot(d.getTimeslot());
                     String formatedDate = returnLongDateTime(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT).format(date));
                     dateList.add(formatedDate);
-
                 }
             }
         });

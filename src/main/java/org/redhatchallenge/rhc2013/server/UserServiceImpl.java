@@ -199,6 +199,30 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
         }
     }
 
+    @Override
+    public Boolean resetTestDetails(Student student) throws IllegalArgumentException {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        try {
+            Set<Integer> questions = randomQuestions();
+            Integer[] arr = questions.toArray(new Integer[questions.size()]);
+            int[] questionsArray = ArrayUtils.toPrimitive(arr);
+
+            student.setQuestions(questionsArray);
+            student.setStartTime(null);
+            student.setEndTime(null);
+            student.setScore(0);
+
+            session.update(student);
+            session.getTransaction().commit();
+            return true;
+        }
+        catch (HibernateException e) {
+            session.getTransaction().rollback();
+            return false;
+        }
+    }
+
     private Long convertTimeSlotOthers(String timeSlot){
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTime time;
@@ -368,7 +392,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
             String fname = UUID.randomUUID().toString();
             writer = new CSVWriter(new FileWriter(System.getenv("OPENSHIFT_TMP_DIR") + fname + ".csv"));
             List<String[]> list = new ArrayList<String[]>();
-
+            list.add(csvHeader());
             for(Student s : students) {
                 list.add(studentToStringArray(s));
             }
@@ -417,26 +441,47 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
      */
     private String[] studentToStringArray(Student student) {
 
-        String[] strings = new String[17];
+        String[] strings = new String[16];
         strings[0] = student.getEmail();
-        strings[1] = student.getPassword();
-        strings[2] = student.getFirstName();
-        strings[3] = student.getLastName();
-        strings[4] = student.getContact();
-        strings[5] = student.getCountry();
-        strings[6] = student.getCountryCode();
-        strings[7] = student.getSchool();
-        strings[8] = student.getLecturerFirstName();
-        strings[9] = student.getLecturerLastName();
-        strings[10] = student.getLecturerEmail();
-        strings[11] = student.getLanguage();
-        strings[12] = student.getVerified().toString();
-        strings[13] = student.getStatus().toString();
-        strings[14] = String.valueOf(student.getScore());
-        strings[15] = String.valueOf(student.getStartTime());
-        strings[16] = String.valueOf(student.getEndTime());
+        strings[1] = student.getFirstName();
+        strings[2] = student.getLastName();
+        strings[3] = student.getContact();
+        strings[4] = student.getCountry();
+        strings[5] = student.getCountryCode();
+        strings[6] = student.getSchool();
+        strings[7] = student.getLecturerFirstName();
+        strings[8] = student.getLecturerLastName();
+        strings[9] = student.getLecturerEmail();
+        strings[10] = student.getLanguage();
+        strings[11] = student.getVerified().toString();
+        strings[12] = student.getStatus().toString();
+        strings[13] = String.valueOf(student.getScore());
+        strings[14] = String.valueOf(student.getStartTime());
+        strings[15] = String.valueOf(student.getEndTime());
 
         return strings;
+    }
+
+    private String[] csvHeader(){
+        String[] csvHeader = new String[16];
+        csvHeader[0] = "Email Address";
+        csvHeader[1] = "First Name";
+        csvHeader[2] = "Last Name";
+        csvHeader[3] = "Contact No.";
+        csvHeader[4] = "Country";
+        csvHeader[5] = "Country Code";
+        csvHeader[6] = "School";
+        csvHeader[7] = "Lecturer First Name";
+        csvHeader[8] = "Lecturer Last Name";
+        csvHeader[9] = "Lecturer Email";
+        csvHeader[10] = "Language";
+        csvHeader[11] = "Verified";
+        csvHeader[12] = "Status";
+        csvHeader[13] = "Score";
+        csvHeader[14] = "Start Time";
+        csvHeader[15] = "End Time";
+
+        return csvHeader;
     }
 
     /**

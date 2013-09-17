@@ -6,6 +6,7 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -20,6 +21,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -40,6 +42,7 @@ import java.util.List;
  * Time: 1:34 PM
  * To change this template use File | Settings | File Templates.
  */
+
 public class ResultScreen extends Composite {
     interface ResultScreenUiBinder extends UiBinder<Widget, ResultScreen>{
     }
@@ -53,6 +56,11 @@ public class ResultScreen extends Composite {
     @UiField Button exportButton;
     @UiField TextBox searchField;
     @UiField Button searchButton;
+    @UiField Button resetButton;
+    @UiField Button currentTakerButton;
+    @UiField Label currentTakerLabel;
+    @UiField ListBox viewResultList;
+    @UiField Label filterLabel;
 
     private UserServiceAsync userService = UserService.Util.getInstance();
     private ListDataProvider<Student> provider;
@@ -60,6 +68,7 @@ public class ResultScreen extends Composite {
     private List<Student> listOfOriginStudents;
     private List<Student> list = new ArrayList<Student>();
     private List<Student> listOfSelectedStudents = new ArrayList<Student>();
+    private List<Student> currentTakerList = new ArrayList<Student>();
 
     private static final ProvidesKey<Student> KEY_PROVIDER = new ProvidesKey<Student>() {
         @Override
@@ -68,7 +77,7 @@ public class ResultScreen extends Composite {
         }
     };
 
-    public ResultScreen(){
+    public ResultScreen() {
         initWidget(UiBinder.createAndBindUi(this));
 
         userService.getListOfStudents(new AsyncCallback<List<Student>>() {
@@ -82,6 +91,11 @@ public class ResultScreen extends Composite {
                 listOfOriginStudents = new ArrayList<Student>(students);
                 studentList = students;
                 for (Student s : studentList) {
+                    if (s.getStartTime() != null){
+                        if (s.getEndTime() == null){
+                                currentTakerList.add(s);
+                        }
+                    }
                     list.add(s);
                 }
 
@@ -89,14 +103,23 @@ public class ResultScreen extends Composite {
                 provider.addDataDisplay(resultCellTable);
 
                 initResultCellTable();
+                currentTakerLabel.setText("Number of contestants currently taking the challenge: " + currentTakerList.size());
+
             }
         });
+
         pager.setDisplay(resultCellTable);
         pager.setPageSize(8);
         resultLabel.setVisible(false);
+        viewResultList.insertItem("All", 0);
+        viewResultList.insertItem("Bronze", 1);
+        viewResultList.insertItem("Silver", 2);
+        viewResultList.insertItem("Gold", 3);
+        filterLabel.setText("Filter by: ");
+
     }
 
-    private void initResultCellTable(){
+    private void initResultCellTable() {
         List list = provider.getList();
         final MultiSelectionModel<Student> selectionModel = new MultiSelectionModel<Student>(KEY_PROVIDER);
 
@@ -314,7 +337,7 @@ public class ResultScreen extends Composite {
     }
 
     @UiHandler("refreshButton")
-    public void handleRefreshButton(ClickEvent event){
+    public void handleRefreshButton(ClickEvent event) {
 //        Timer timer = new Timer() {
 //            @Override
 //            public void run() {
@@ -378,10 +401,95 @@ public class ResultScreen extends Composite {
                 if (s.getEmail().toLowerCase().contains(criteria.toLowerCase())){
                     list.add(s);
                 }
+
+                if (s.getFirstName().toLowerCase().contains(criteria.toLowerCase())){
+                    list.add(s);
+                }
             }
             provider.getList().clear();
             provider.getList().addAll(list);
         }
     }
 
+    @UiHandler("resetButton")
+    public void handleResetButton(ClickEvent event) {
+        List<Student> listToChange = listOfSelectedStudents;
+        if (listToChange.size() != 0){
+            for (Student s : listToChange) {
+                userService.resetTestDetails(s, new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        resultLabel.setText("Reset Unsuccessful.");
+                        resultLabel.setVisible(true);
+                    }
+
+                    @Override
+                    public void onSuccess(Boolean aBoolean) {
+                        resultLabel.setText("Reset Successful" + listOfSelectedStudents.size());
+                        resultLabel.setVisible(true);
+                    }
+                });
+            }
+            ContentContainer.INSTANCE.setContent(new ResultScreen());
+        }
+        else {
+            resultLabel.setText("Please select atleast 1 contestant before proceeding.");
+            resultLabel.setVisible(true);
+        }
+    }
+
+    @UiHandler("currentTakerButton")
+    public void handleCurrentTakerButton(ClickEvent event){
+        provider.getList().clear();
+        provider.getList().addAll(currentTakerList);
+    }
+
+    @UiHandler("viewResultList")
+    public void handleViewScoreList(ChangeEvent event){
+
+        int selectedItem = viewResultList.getSelectedIndex();
+
+        int GOLD = 100;
+        int SILVER = 75;
+        int BRONZE = 50;
+
+        List<Student> resultList = new ArrayList<Student>();
+
+        if (selectedItem == 0){
+            for (Student s : listOfOriginStudents){
+                if (s.getScore() >= 0){
+                    resultList.add(s);
+                }
+            }
+        }
+
+        else if (selectedItem == 1){
+            for (Student s : listOfOriginStudents){
+                if (s.getScore() >= BRONZE)
+                    if (s.getScore() < SILVER){
+                        resultList.add(s);
+                    }
+            }
+        }
+
+        else if (selectedItem == 2){
+            for (Student s : listOfOriginStudents){
+                if (s.getScore() >= SILVER){
+                    if (s.getScore() < GOLD){
+                        resultList.add(s);
+                    }
+                }
+            }
+        }
+
+        else if (selectedItem == 3){
+            for (Student s : listOfOriginStudents){
+                if (s.getScore() >= GOLD){
+                    resultList.add(s);
+                }
+            }
+        }
+        provider.getList().clear();
+        provider.getList().addAll(resultList);
+    }
 }

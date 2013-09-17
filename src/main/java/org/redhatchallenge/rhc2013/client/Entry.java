@@ -8,6 +8,6 @@ public class Entry implements EntryPoint {
     @Override
     public void onModuleLoad() {
         RootPanel.get("header").add(new Header());
-        ContentContainer.INSTANCE.setContent(new ResultScreen());
+        ContentContainer.INSTANCE.setContent(new UserScreen());
     }
 }

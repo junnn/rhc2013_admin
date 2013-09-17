@@ -24,6 +24,8 @@ public interface UserServiceAsync {
 
     void assignTimeSlot(List<Student> students, String timeSlot, AsyncCallback<Boolean> async);
 
+    void resetTestDetails(Student student, AsyncCallback<Boolean> async);
+
     void registerStudent(String email, String password, String firstName, String lastName, String contact,
                          String country, String countryCode, String school, String lecturerFirstName, String lecturerLastName,
                          String lecturerEmail, String language, Boolean verified, AsyncCallback<Boolean> async);
