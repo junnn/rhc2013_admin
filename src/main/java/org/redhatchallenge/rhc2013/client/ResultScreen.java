@@ -449,33 +449,29 @@ public class ResultScreen extends Composite {
 
         int selectedItem = viewResultList.getSelectedIndex();
 
-        int GOLD = 100;
-        int SILVER = 75;
-        int BRONZE = 50;
+        int GOLD = 240;
+        int SILVER = 239;
+        int BRONZE = 150;
 
         List<Student> resultList = new ArrayList<Student>();
 
         if (selectedItem == 0){
             for (Student s : listOfOriginStudents){
-                if (s.getScore() >= 0){
                     resultList.add(s);
-                }
             }
         }
 
         else if (selectedItem == 1){
             for (Student s : listOfOriginStudents){
-                if (s.getScore() >= BRONZE)
-                    if (s.getScore() < SILVER){
-                        resultList.add(s);
-                    }
+                if (s.getScore() <= BRONZE)
+                    resultList.add(s);
             }
         }
 
         else if (selectedItem == 2){
             for (Student s : listOfOriginStudents){
-                if (s.getScore() >= SILVER){
-                    if (s.getScore() < GOLD){
+                if (s.getScore() > BRONZE){
+                    if (s.getScore() <= SILVER){
                         resultList.add(s);
                     }
                 }
