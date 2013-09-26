@@ -1130,7 +1130,8 @@ public class UserScreen extends Composite {
 
     @UiHandler("refreshButton")
     public void handleRefreshButtonClick(ClickEvent event) {
-        ContentContainer.INSTANCE.setContent(new UserScreen());
+//        ContentContainer.INSTANCE.setContent(new UserScreen());
+        errorLabel.setText("hello");
     }
 
     private void setUserCount() {

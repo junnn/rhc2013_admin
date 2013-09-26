@@ -104,7 +104,6 @@ public class ResultScreen extends Composite {
 
                 initResultCellTable();
                 currentTakerLabel.setText("Number of contestants currently taking the challenge: " + currentTakerList.size());
-
             }
         });
 
@@ -116,7 +115,6 @@ public class ResultScreen extends Composite {
         viewResultList.insertItem("Silver", 2);
         viewResultList.insertItem("Gold", 3);
         filterLabel.setText("Filter by: ");
-
     }
 
     private void initResultCellTable() {
@@ -227,7 +225,6 @@ public class ResultScreen extends Composite {
         });
         //End of First Name
 
-
         //Tiimeslot Column
         Column<Student, String> timeSlotColumn = new Column<Student, String>(new TextCell()) {
             @Override
@@ -332,21 +329,12 @@ public class ResultScreen extends Composite {
         resultCellTable.addColumn(scoreColumn, "Score");
         resultCellTable.addColumn(startTimeColumn, "Start Time");
         resultCellTable.addColumn(EndTimeColumn, "End Time");
-
         resultCellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Student>createCheckboxManager(resultCellTable.getColumnIndex(selectColumn)));
     }
 
     @UiHandler("refreshButton")
     public void handleRefreshButton(ClickEvent event) {
-//        Timer timer = new Timer() {
-//            @Override
-//            public void run() {
-//                ContentContainer.INSTANCE.setContent(new ResultScreen());
-//            }
-//        };
-//        timer.scheduleRepeating(1000*60); //1 minute
           ContentContainer.INSTANCE.setContent(new ResultScreen());
-
     }
 
     @UiHandler("exportButton")
@@ -377,16 +365,18 @@ public class ResultScreen extends Composite {
             }
         });
     }
+
     @UiHandler("searchField")
     public void handleSearchField(ClickEvent event) {
+
         searchField.setFocus(true);
         searchField.selectAll();
     }
 
     @UiHandler("searchButton")
     public void handleSearchButton(ClickEvent event) {
-        String criteria = searchField.getText();
 
+        String criteria = searchField.getText();
         List<Student> list = new ArrayList<Student>();
 
         if(criteria.equals("")){
@@ -448,7 +438,6 @@ public class ResultScreen extends Composite {
     public void handleViewScoreList(ChangeEvent event){
 
         int selectedItem = viewResultList.getSelectedIndex();
-
         int GOLD = 240;
         int SILVER = 239;
         int BRONZE = 150;
@@ -464,7 +453,9 @@ public class ResultScreen extends Composite {
         else if (selectedItem == 1){
             for (Student s : listOfOriginStudents){
                 if (s.getScore() <= BRONZE)
-                    resultList.add(s);
+                    if (s.getStartTime() != null && s.getEndTime() != null){
+                        resultList.add(s);
+                    }
             }
         }
 
@@ -485,6 +476,7 @@ public class ResultScreen extends Composite {
                 }
             }
         }
+
         provider.getList().clear();
         provider.getList().addAll(resultList);
     }

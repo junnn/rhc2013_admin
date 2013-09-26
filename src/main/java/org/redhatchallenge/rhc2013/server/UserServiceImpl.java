@@ -25,9 +25,9 @@ import java.util.*;
 
 public class UserServiceImpl extends RemoteServiceServlet implements UserService {
 
-    @Override
+	@Override
     public List<Student> getListOfStudents() throws IllegalArgumentException {
-
+		
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         try {
             session.beginTransaction();
@@ -40,7 +40,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
             return null;
         }
     }
-
+	
     @Override
     public List<Student> getListOfDeletedStudents() throws IllegalArgumentException {
 
@@ -50,6 +50,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
             //noinspection unchecked
             List<Student> studentList = session.createCriteria(Student.class).add(Restrictions.eq("status", Boolean.FALSE)).list();
             session.close();
+            System.out.println(studentList);
             return studentList;
         } catch (HibernateException e) {
             session.close();
