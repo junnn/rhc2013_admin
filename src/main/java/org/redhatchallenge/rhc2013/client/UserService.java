@@ -13,6 +13,8 @@ import java.util.List;
 @RemoteServiceRelativePath("UserService")
 public interface UserService extends RemoteService {
 
+//    int getCacheScore(String id) throws IllegalArgumentException;
+
     List<Student> getListOfStudents() throws IllegalArgumentException;
 
     List<Student> getListOfDeletedStudents() throws IllegalArgumentException;

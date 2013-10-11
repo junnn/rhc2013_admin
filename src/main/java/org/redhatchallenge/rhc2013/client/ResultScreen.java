@@ -69,6 +69,8 @@ public class ResultScreen extends Composite {
     private List<Student> list = new ArrayList<Student>();
     private List<Student> listOfSelectedStudents = new ArrayList<Student>();
     private List<Student> currentTakerList = new ArrayList<Student>();
+    private List<Integer> score;
+
 
     private static final ProvidesKey<Student> KEY_PROVIDER = new ProvidesKey<Student>() {
         @Override
@@ -108,7 +110,7 @@ public class ResultScreen extends Composite {
         });
 
         pager.setDisplay(resultCellTable);
-        pager.setPageSize(8);
+        pager.setPageSize(100);
         resultLabel.setVisible(false);
         viewResultList.insertItem("All", 0);
         viewResultList.insertItem("Bronze", 1);
@@ -258,7 +260,19 @@ public class ResultScreen extends Composite {
         Column<Student, String> scoreColumn = new Column<Student, String>(new TextCell()) {
             @Override
             public String getValue(Student student) {
-                return String.valueOf(student.getScore());
+                if (student.getStartTime() == null){
+                    return "Haven't start test";
+                }
+                if (student.getStartTime() != null && student.getEndTime() == null && student.getScore() == 0){
+                    return "Use Cache result";
+                }
+//                if (student.getScore() == 0){
+//                    return "ZERO";
+//                }
+
+                else {
+                    return String.valueOf(student.getScore());
+                }
             }
         };
 
@@ -432,6 +446,22 @@ public class ResultScreen extends Composite {
     public void handleCurrentTakerButton(ClickEvent event){
         provider.getList().clear();
         provider.getList().addAll(currentTakerList);
+
+//        for (Student s: listOfSelectedStudents){
+//            userService.getCacheScore(String.valueOf(s.getContestantId()), new AsyncCallback<Integer>() {
+//                @Override
+//                public void onFailure(Throwable throwable) {
+//                    throwable.printStackTrace();
+//                }
+//
+//                @Override
+//                public void onSuccess(Integer integer) {
+//                    score.add(integer);
+//                }
+//            });
+//        }
+//        currentTakerLabel.setText(score.toString());
+
     }
 
     @UiHandler("viewResultList")
@@ -478,6 +508,11 @@ public class ResultScreen extends Composite {
         }
 
         provider.getList().clear();
-        provider.getList().addAll(resultList);
+        if (resultList.size() == 0){
+            resultCellTable.setRowCount(0);
+        }
+        else{
+            provider.getList().addAll(resultList);
+        }
     }
 }

@@ -10,6 +10,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.type.StandardBasicTypes;
+import org.infinispan.Cache;
+import org.infinispan.manager.EmbeddedCacheManager;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.redhatchallenge.rhc2013.client.UserService;
@@ -17,6 +19,7 @@ import org.redhatchallenge.rhc2013.shared.RegStatus;
 import org.redhatchallenge.rhc2013.shared.Student;
 import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
+import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,6 +27,19 @@ import java.util.*;
 
 
 public class UserServiceImpl extends RemoteServiceServlet implements UserService {
+//
+//    @Resource(lookup = "java:jboss/infinispan/cluster")
+//    EmbeddedCacheManager container;
+//
+//    private Cache<String, Integer> scoreMap = container.getCache("scoreMap", true);     //String variable to store contestant ID.
+//    private Cache<String, int[]> assignedQuestionsMap = container.getCache("assignedQuestionsMap", true);
+//
+//    @Override
+//    public int getCacheScore(String id) throws IllegalArgumentException{
+//        int score = scoreMap.get(id);
+//        return score;
+//    }
+//
 
 	@Override
     public List<Student> getListOfStudents() throws IllegalArgumentException {
@@ -216,6 +232,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
             session.update(student);
             session.getTransaction().commit();
+            /**
+             * TODO: reset the cache for that student.
+             */
+
             return true;
         }
         catch (HibernateException e) {
