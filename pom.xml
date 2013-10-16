@@ -115,7 +115,8 @@
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-core</artifactId>
-            <version>5.3.0.Final</version>
+            <version>5.1.2.FINAL</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
@@ -170,7 +171,7 @@
                     see gwt-maven-plugin documentation at codehaus.org -->
                 <configuration>
                     <!-- URL that should be automatically opened in the GWT shell (gwt:run). -->
-                    <runTarget>registration.html</runTarget>
+                    <runTarget>administration.html</runTarget>
                     <!-- Location of the develop-mode web application structure (gwt:run). -->
                     <hostedWebapp>target/www</hostedWebapp>
                     <!-- Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile) -->

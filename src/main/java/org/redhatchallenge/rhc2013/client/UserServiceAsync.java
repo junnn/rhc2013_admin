@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public interface UserServiceAsync {
-//    void getCacheScore(String id, AsyncCallback<Integer> async);
+    void getCacheQuestion(String id, AsyncCallback<Integer> async);
 
     void getListOfStudents(AsyncCallback<List<Student>> async);
 

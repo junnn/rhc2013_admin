@@ -1,5 +1,6 @@
 package org.redhatchallenge.rhc2013.client;
 
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
@@ -8,6 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -19,10 +21,14 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
@@ -31,9 +37,11 @@ import com.google.gwt.view.client.ProvidesKey;
 import org.redhatchallenge.rhc2013.shared.Student;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * Created with IntelliJ IDEA.
@@ -69,7 +77,7 @@ public class ResultScreen extends Composite {
     private List<Student> list = new ArrayList<Student>();
     private List<Student> listOfSelectedStudents = new ArrayList<Student>();
     private List<Student> currentTakerList = new ArrayList<Student>();
-    private List<Integer> score;
+    public String score;
 
 
     private static final ProvidesKey<Student> KEY_PROVIDER = new ProvidesKey<Student>() {
@@ -120,6 +128,7 @@ public class ResultScreen extends Composite {
     }
 
     private void initResultCellTable() {
+        ButtonCell buttonCell = new ButtonCell();
         List list = provider.getList();
         final MultiSelectionModel<Student> selectionModel = new MultiSelectionModel<Student>(KEY_PROVIDER);
 
@@ -260,17 +269,11 @@ public class ResultScreen extends Composite {
         Column<Student, String> scoreColumn = new Column<Student, String>(new TextCell()) {
             @Override
             public String getValue(Student student) {
-                if (student.getStartTime() == null){
-                    return "Haven't start test";
+                if (student.getStartTime() == null && student.getEndTime() == null){
+                    return  "Haven't start test";
                 }
-                if (student.getStartTime() != null && student.getEndTime() == null && student.getScore() == 0){
-                    return "Use Cache result";
-                }
-//                if (student.getScore() == 0){
-//                    return "ZERO";
-//                }
 
-                else {
+                else{
                     return String.valueOf(student.getScore());
                 }
             }
@@ -336,6 +339,65 @@ public class ResultScreen extends Composite {
         });
         //End of Endtime.
 
+        //Question Column
+        Column<Student, String> QuestionColumn = new Column<Student, String>(buttonCell) {
+            @Override
+            public String getValue(Student student) {
+                return "Questions Progress";
+            }
+        };
+
+        QuestionColumn.setFieldUpdater(new FieldUpdater<Student, String>() {
+            @Override
+            public void update(int i, Student student, String s) {
+                final HTML messageLabel = new HTML();
+                userService.getCacheQuestion(String.valueOf(student.getContestantId()), new AsyncCallback<Integer>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        throwable.printStackTrace();
+                        messageLabel.setHTML("Unexpected Error Occurred...");
+                    }
+
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        if (integer == -1){
+                            messageLabel.setHTML("Test not in progress.");
+                        }
+                        else {
+                            messageLabel.setHTML("Progress" + integer + "/150" );
+                        }
+
+                    }
+                });
+
+                final DialogBox confirmBox = new DialogBox();
+                confirmBox.setText("Questions for " + student.getEmail());
+
+
+                VerticalPanel verticalPanel = new VerticalPanel();
+                verticalPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
+                final Button cancelButton = new Button("Cancel");
+
+                cancelButton.setEnabled(true);
+                cancelButton.getElement().setId("cancel");
+
+                cancelButton.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        confirmBox.hide();
+                    }
+                });
+
+
+                verticalPanel.add(messageLabel);
+                verticalPanel.add(cancelButton);
+                confirmBox.setWidget(verticalPanel);
+                confirmBox.center();
+            }
+        });
+
+        //End of Question
+
         resultCellTable.addColumn(selectColumn, selectAllHeader);
         resultCellTable.addColumn(emailColumn, "Email");
         resultCellTable.addColumn(firstNameColumn, "Name");
@@ -343,6 +405,7 @@ public class ResultScreen extends Composite {
         resultCellTable.addColumn(scoreColumn, "Score");
         resultCellTable.addColumn(startTimeColumn, "Start Time");
         resultCellTable.addColumn(EndTimeColumn, "End Time");
+        resultCellTable.addColumn(QuestionColumn, "Questions");
         resultCellTable.setSelectionModel(selectionModel, DefaultSelectionEventManager.<Student>createCheckboxManager(resultCellTable.getColumnIndex(selectColumn)));
     }
 
@@ -446,21 +509,6 @@ public class ResultScreen extends Composite {
     public void handleCurrentTakerButton(ClickEvent event){
         provider.getList().clear();
         provider.getList().addAll(currentTakerList);
-
-//        for (Student s: listOfSelectedStudents){
-//            userService.getCacheScore(String.valueOf(s.getContestantId()), new AsyncCallback<Integer>() {
-//                @Override
-//                public void onFailure(Throwable throwable) {
-//                    throwable.printStackTrace();
-//                }
-//
-//                @Override
-//                public void onSuccess(Integer integer) {
-//                    score.add(integer);
-//                }
-//            });
-//        }
-//        currentTakerLabel.setText(score.toString());
 
     }
 

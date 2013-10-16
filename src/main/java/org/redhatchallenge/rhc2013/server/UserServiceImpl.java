@@ -11,7 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.type.StandardBasicTypes;
 import org.infinispan.Cache;
-import org.infinispan.manager.EmbeddedCacheManager;
+import org.infinispan.manager.CacheContainer;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.redhatchallenge.rhc2013.client.UserService;
@@ -20,6 +20,8 @@ import org.redhatchallenge.rhc2013.shared.Student;
 import org.redhatchallenge.rhc2013.shared.TimeSlotList;
 
 import javax.annotation.Resource;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,19 +29,51 @@ import java.util.*;
 
 
 public class UserServiceImpl extends RemoteServiceServlet implements UserService {
-//
-//    @Resource(lookup = "java:jboss/infinispan/cluster")
-//    EmbeddedCacheManager container;
-//
-//    private Cache<String, Integer> scoreMap = container.getCache("scoreMap", true);     //String variable to store contestant ID.
-//    private Cache<String, int[]> assignedQuestionsMap = container.getCache("assignedQuestionsMap", true);
-//
-//    @Override
-//    public int getCacheScore(String id) throws IllegalArgumentException{
-//        int score = scoreMap.get(id);
-//        return score;
-//    }
-//
+    private Cache<String, Integer> scoreMap;
+    private Cache<String, int[]> assignedQuestionsMap;
+
+    public UserServiceImpl(){
+        try {
+            InitialContext ic = new InitialContext();
+
+            Object expectedContainer = ic.lookup("java:jboss/infinispan/foobar");
+            CacheContainer container = null;
+
+            if (expectedContainer instanceof CacheContainer) {
+                container = (CacheContainer) expectedContainer;
+            } else {
+                throw new RuntimeException("Error");
+            }
+
+            scoreMap = container.getCache("scoreMap");
+            assignedQuestionsMap = container.getCache("assignedQuestionsMap");
+
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+    private int getCacheScore(String id) throws IllegalArgumentException{
+        return scoreMap.get(id);
+    }
+
+    @Override
+    public int getCacheQuestion(String id) throws  IllegalArgumentException{
+
+        if (assignedQuestionsMap.containsKey(id)) {
+            int questionsLeft = assignedQuestionsMap.get(id).length;
+            int progress = 150 - questionsLeft;
+            return progress;
+        }
+
+        else {
+            return -1;
+        }
+    }
 
 	@Override
     public List<Student> getListOfStudents() throws IllegalArgumentException {
@@ -49,6 +83,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
             session.beginTransaction();
             //noinspection unchecked
             List<Student> studentList = session.createCriteria(Student.class).add(Restrictions.eq("status", Boolean.TRUE)).list();
+
+            for (Student s : studentList){
+                if (s.getStartTime() != null && s.getEndTime() == null){
+                    s.setScore(getCacheScore(String.valueOf(s.getContestantId())));
+                }
+            }
+
             session.close();
             return studentList;
         } catch (HibernateException e) {
@@ -235,6 +276,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
             /**
              * TODO: reset the cache for that student.
              */
+
+            scoreMap.remove(String.valueOf(student.getContestantId()));
+            assignedQuestionsMap.remove(String.valueOf(student.getContestantId()));
+
 
             return true;
         }
