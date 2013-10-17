@@ -58,7 +58,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 
     private int getCacheScore(String id) throws IllegalArgumentException{
-        return scoreMap.get(id);
+        if(scoreMap.containsKey(id)) {
+            return scoreMap.get(id);
+        }
+
+        else {
+            return 0;
+        }
     }
 
     @Override
@@ -90,11 +96,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
                 }
             }
 
-            session.close();
             return studentList;
         } catch (HibernateException e) {
-            session.close();
+            e.printStackTrace();
             return null;
+        } finally {
+            session.close();
         }
     }
 	
